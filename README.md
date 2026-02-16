@@ -346,7 +346,7 @@ dart examples/03_dart_basics.dart
 - [ ] Explore Flutter's built-in widgets (Container, Row, Column, Stack)
 - [ ] Learn about state management solutions (Provider, Riverpod, Bloc)
 - [ ] Build a multi-screen app with navigation
-- [ ] Integrate with Firebase for backend services
+- [x] Integrate with Firebase for backend services ([Project: Syncly - SafeGate App](safegate_app/))
 - [ ] Practice responsive design for different screen sizes
 - [ ] Publish your first app to the Play Store or App Store
 
