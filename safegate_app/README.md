@@ -1,53 +1,68 @@
-# Syncly - SafeGate App
+# SafeGate App
 
-This is a collaborative task management app built with Flutter and Firebase, designed to demonstrate backend integration for authentication, real-time database, and cloud storage.
+A Flutter application demonstrating basic Dart and Flutter concepts with a simple welcome screen that includes state management and user interaction.
+
+## 📁 Folder Structure
+
+```
+lib/
+├── main.dart          # Entry point of the app, contains the main function and app setup
+├── auth_service.dart  # Service for Firebase authentication (future use)
+├── firestore_service.dart # Service for Firestore database operations (future use)
+├── home_page.dart     # Home page widget (future use)
+├── login_page.dart    # Login page widget (future use)
+├── storage_service.dart # Service for Firebase storage (future use)
+```
+
+### Purpose of Each Directory/File
+- **lib/**: Contains all the Dart source code for the application.
+  - **main.dart**: The root of the application, initializes the app and defines the main widget tree.
+  - **auth_service.dart**: Handles user authentication logic using Firebase Auth.
+  - **firestore_service.dart**: Manages database operations with Cloud Firestore.
+  - **home_page.dart**: Defines the home screen UI after login.
+  - **login_page.dart**: Provides the login interface.
+  - **storage_service.dart**: Handles file uploads and downloads to Firebase Storage.
+
+### How This Structure Supports Modular App Design
+This structure separates concerns by placing UI components in dedicated files and business logic in service files. This makes the code easier to maintain, test, and scale. For example, authentication logic is isolated in `auth_service.dart`, allowing it to be reused across different parts of the app without duplication.
+
+### Naming Conventions
+- **Files**: Use lowercase with underscores (snake_case), e.g., `auth_service.dart`.
+- **Classes**: Use PascalCase, e.g., `AuthService`, `LoginPage`.
+- **Widgets**: End with "Page" for full screens or "Widget" for components, e.g., `HomePage`, `WelcomePage`.
+- **Variables**: Use camelCase, e.g., `_isWelcomed`.
+- **Constants**: Use UPPER_SNAKE_CASE if needed.
 
 ## 🚀 Setup Instructions
 
-1.  **Firebase Configuration**:
-    *   Create a project in the [Firebase Console](https://console.firebase.google.com/).
-    *   Add an Android/iOS app.
-    *   Download `google-services.json` (for Android) and place it in `android/app/`.
-    *   (For iOS) Download `GoogleService-Info.plist` and place it in `ios/Runner/`.
-    *   Ensure `firebase_core`, `cloud_firestore`, `firebase_auth`, and `firebase_storage` are enabled in the console.
+1. **Install Flutter SDK**: Follow the official guide at [flutter.dev](https://flutter.dev/docs/get-started/install).
+2. **Install Android Studio or VS Code**: With Flutter and Dart extensions.
+3. **Verify Installation**:
+   ```bash
+   flutter doctor
+   ```
+4. **Create and Run the Project**:
+   ```bash
+   cd safegate_app
+   flutter pub get
+   flutter run
+   ```
 
-2.  **Run the App**:
-    ```bash
-    flutter pub get
-    flutter run
-    ```
+## 🧠 Reflection
 
-## 🔥 Key Firebase Services Implemented
+Through this task, I learned the basics of Dart syntax including classes, state management with StatefulWidget, and event handling with onPressed. Flutter's widget-based architecture makes building UIs intuitive with composable components like Scaffold, Column, and ElevatedButton.
 
-### 1. Firebase Authentication
-*   **Purpose**: Manages user secure access.
-*   **Implementation**: Used `FirebaseAuth` to handle Sign Up and Login via Email/Password.
-*   **Code**: `lib/auth_service.dart`.
+This clean folder structure will help build complex UIs later by keeping code organized. Separating services from UI allows for easier testing and maintenance as the app grows. The modular design supports adding new features without cluttering the main files.
 
-### 2. Cloud Firestore (Real-Time Database)
-*   **Purpose**: Stores tasks and synchronizes them across devices instantly.
-*   **Real-Time Sync**:
-    *   Using `StreamBuilder` combined with `snapshots()`, the app listens for changes in the `tasks` collection.
-    *   Any change (add, update, delete) triggers a UI rebuild automatically on all connected devices without manual refresh.
-*   **Code**: `lib/firestore_service.dart`.
+## 📱 Demo
 
-### 3. Firebase Storage (Optional)
-*   **Purpose**: Stores task attachments (images).
-*   **Implementation**: Uploads image files to a bucket and retrieves a download URL to store in Firestore.
-*   **Code**: `lib/storage_service.dart`.
+![App Screenshot](screenshot.png)
 
-## 🧠 Analysis: How Firebase Solves Backend Challenges
+*(Replace with actual screenshot of the running app)*
 
-**Case Study: The To-Do App That Wouldn’t Sync**
+## 🎥 Video Demo
 
-*   **Authentication**: Instead of building a custom auth server with JWTs and encryption, Firebase Auth handles session management, password security, and identity verification out-of-the-box.
-*   **Real-Time Sync**: Traditional REST APIs require polling or complex WebSocket setups to show updates. Firestore's listener model pushes changes to the client immediately, solving the issue of "changes took minutes to appear".
-*   **Scalability**: Firebase scales automatically. As `Syncly` grows from 10 to 10,000 users, the NoSQL structure and serverless infrastructure handle the load without manual server provisioning.
-
-## 📱 Screenshots & Demo
-
-*(Insert screenshots of Login Screen, Task List, and Real-time update here)*
-*(Link to Video Walkthrough)*
+[Link to Video Demo](https://example.com/video) *(Upload your 1-2 minute demo showing the app running, structure, and interaction)*
 
 ## 📝 Reflection
 
