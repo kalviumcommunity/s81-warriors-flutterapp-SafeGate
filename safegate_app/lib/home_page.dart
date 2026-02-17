@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'auth_service.dart';
 import 'firestore_service.dart';
 import 'storage_service.dart';
+import 'screens/responsive_home.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -126,6 +127,16 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text("Syncly Tasks"),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.phone_android),
+            tooltip: 'View Responsive Layout',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ResponsiveHome()),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () => _auth.signOut(),
