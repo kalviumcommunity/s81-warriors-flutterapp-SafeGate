@@ -23,15 +23,15 @@ lib/
 - **lib/**: Contains all the Dart source code for the application.
   - **main.dart**: The root of the application, initializes the app and defines the main widget tree.
   - **screens/**: Houses individual screen widgets for different app pages, promoting separation of UI concerns.
+    - **home_page.dart**: Defines the home screen UI after login.
+    - **login_page.dart**: Provides the login interface.
+    - **welcome_page.dart**: The custom welcome screen with interactive state changes.
   - **widgets/**: For reusable UI components that can be shared across screens.
   - **models/**: Will contain data classes and structures for app data.
   - **services/**: Contains business logic and external service integrations like Firebase.
     - **auth_service.dart**: Handles user authentication logic using Firebase Auth.
     - **firestore_service.dart**: Manages database operations with Cloud Firestore.
-    - **home_page.dart**: Defines the home screen UI after login.
-    - **login_page.dart**: Provides the login interface.
     - **storage_service.dart**: Handles file uploads and downloads to Firebase Storage.
-    - **welcome_page.dart**: The custom welcome screen with interactive state changes.
 
 ### How This Structure Supports Modular App Design
 This structure separates concerns by organizing code into logical layers: UI screens, reusable components, data models, and services. This makes the code easier to maintain, test, and scale. For example, authentication logic is isolated in `services/`, allowing it to be reused across different screens without duplication. The modular design supports adding new features without cluttering the main files, and each directory can be developed and tested independently.
@@ -69,6 +69,33 @@ This clean folder structure will help build complex UIs later by keeping code or
 ![App Screenshot](screenshot.png)
 
 *(Replace with actual screenshot of the running app)*
+
+## 📚 API Documentation & Architecture
+
+### API Documentation
+- **Tool**: Postman Collection
+- **Version**: 1.0.0
+- **Base URL**: https://your-app.firebaseapp.com
+- **Auth**: Firebase Token / OAuth
+- **Updated**: 2025-11-13
+- **Collection File**: [flutter_firebase_postman.json](../docs/flutter_firebase_postman.json)
+- **Public Link**: [Postman Cloud Link](https://example.com/postman) *(Replace with actual share link)*
+
+The collection includes endpoints for:
+- Firebase Auth (Sign Up, Sign In)
+- Firestore (Get/Create Documents)
+- Firebase Storage (Upload Files)
+
+![API Documentation Screenshot](api_docs_screenshot.png) *(Replace with screenshot of Postman collection)*
+
+### Architecture Overview
+- **Architecture Document**: [ARCHITECTURE.md](../ARCHITECTURE.md)
+- **System Diagram**: See the Mermaid diagram in ARCHITECTURE.md for data flow visualization
+
+![Architecture Diagram](architecture_diagram.png) *(Replace with screenshot of the diagram)*
+
+### Reflection on Documentation
+API documentation improves collaboration by providing a clear reference for all team members and future contributors. It ensures consistent API usage and helps with onboarding new developers. Versioning and metadata maintain long-term consistency by tracking changes and preventing breaking updates from going unnoticed.
 
 ## 🎥 Video Demo
 

@@ -1,0 +1,219 @@
+{
+  "info": {
+    "name": "Flutter-Firebase API Documentation",
+    "description": "API documentation for SafeGate App using Firebase services. Version: 1.0.0, Base URL: https://your-app.firebaseapp.com, Auth: Firebase Token / OAuth, Updated: 2025-11-13",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Firebase Auth - Sign Up",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"user@example.com\",\"password\":\"password123\",\"returnSecureToken\":true}"
+        },
+        "url": {
+          "raw": "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=YOUR_API_KEY",
+          "protocol": "https",
+          "host": ["identitytoolkit", "googleapis", "com"],
+          "path": ["v1", "accounts:signUp"],
+          "query": [
+            {
+              "key": "key",
+              "value": "YOUR_API_KEY"
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {},
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": null,
+          "cookie": [],
+          "body": "{\n  \"kind\": \"identitytoolkit#SignupNewUserResponse\",\n  \"idToken\": \"eyJhbGciOiJSUzI1NiIsImtpZCI6Ij...\",\n  \"email\": \"user@example.com\",\n  \"refreshToken\": \"AEu4IL...\",\n  \"expiresIn\": \"3600\",\n  \"localId\": \"user123\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Firebase Auth - Sign In",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"user@example.com\",\"password\":\"password123\",\"returnSecureToken\":true}"
+        },
+        "url": {
+          "raw": "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=YOUR_API_KEY",
+          "protocol": "https",
+          "host": ["identitytoolkit", "googleapis", "com"],
+          "path": ["v1", "accounts:signInWithPassword"],
+          "query": [
+            {
+              "key": "key",
+              "value": "YOUR_API_KEY"
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {},
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": null,
+          "cookie": [],
+          "body": "{\n  \"kind\": \"identitytoolkit#VerifyPasswordResponse\",\n  \"localId\": \"user123\",\n  \"email\": \"user@example.com\",\n  \"displayName\": \"\",\n  \"idToken\": \"eyJhbGciOiJSUzI1NiIsImtpZCI6Ij...\",\n  \"registered\": true,\n  \"refreshToken\": \"AEu4IL...\",\n  \"expiresIn\": \"3600\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Firestore - Get Document",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer YOUR_ID_TOKEN"
+          }
+        ],
+        "url": {
+          "raw": "https://firestore.googleapis.com/v1/projects/YOUR_PROJECT_ID/databases/(default)/documents/users/user123",
+          "protocol": "https",
+          "host": ["firestore", "googleapis", "com"],
+          "path": ["v1", "projects", "YOUR_PROJECT_ID", "databases", "(default)", "documents", "users", "user123"]
+        }
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {},
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": null,
+          "cookie": [],
+          "body": "{\n  \"name\": \"projects/YOUR_PROJECT_ID/databases/(default)/documents/users/user123\",\n  \"fields\": {\n    \"name\": {\n      \"stringValue\": \"John Doe\"\n    },\n    \"email\": {\n      \"stringValue\": \"user@example.com\"\n    }\n  },\n  \"createTime\": \"2023-10-01T12:00:00.000000Z\",\n  \"updateTime\": \"2023-10-01T12:00:00.000000Z\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Firestore - Create Document",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer YOUR_ID_TOKEN"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fields\": {\n    \"name\": {\n      \"stringValue\": \"Jane Doe\"\n    },\n    \"email\": {\n      \"stringValue\": \"jane@example.com\"\n    }\n  }\n}"
+        },
+        "url": {
+          "raw": "https://firestore.googleapis.com/v1/projects/YOUR_PROJECT_ID/databases/(default)/documents/users",
+          "protocol": "https",
+          "host": ["firestore", "googleapis", "com"],
+          "path": ["v1", "projects", "YOUR_PROJECT_ID", "databases", "(default)", "documents", "users"]
+        }
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {},
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": null,
+          "cookie": [],
+          "body": "{\n  \"name\": \"projects/YOUR_PROJECT_ID/databases/(default)/documents/users/auto-generated-id\",\n  \"fields\": {\n    \"name\": {\n      \"stringValue\": \"Jane Doe\"\n    },\n    \"email\": {\n      \"stringValue\": \"jane@example.com\"\n    }\n  },\n  \"createTime\": \"2023-10-01T12:00:00.000000Z\",\n  \"updateTime\": \"2023-10-01T12:00:00.000000Z\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Firebase Storage - Upload File",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer YOUR_ID_TOKEN"
+          },
+          {
+            "key": "Content-Type",
+            "value": "image/jpeg"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "BINARY_FILE_DATA"
+        },
+        "url": {
+          "raw": "https://firebasestorage.googleapis.com/v0/b/YOUR_BUCKET_NAME.appspot.com/o?name=uploads%2Fimage.jpg",
+          "protocol": "https",
+          "host": ["firebasestorage", "googleapis", "com"],
+          "path": ["v0", "b", "YOUR_BUCKET_NAME.appspot.com", "o"],
+          "query": [
+            {
+              "key": "name",
+              "value": "uploads%2Fimage.jpg"
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {},
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": null,
+          "cookie": [],
+          "body": "{\n  \"name\": \"uploads/image.jpg\",\n  \"bucket\": \"YOUR_BUCKET_NAME.appspot.com\",\n  \"generation\": \"123456789\",\n  \"metageneration\": \"1\",\n  \"contentType\": \"image/jpeg\",\n  \"timeCreated\": \"2023-10-01T12:00:00.000000Z\",\n  \"updated\": \"2023-10-01T12:00:00.000000Z\",\n  \"storageClass\": \"STANDARD\",\n  \"size\": \"12345\",\n  \"md5Hash\": \"abc123...\",\n  \"contentEncoding\": \"identity\",\n  \"contentDisposition\": \"\",\n  \"cacheControl\": \"\",\n  \"crc32c\": \"def456\",\n  \"etag\": \"etag123\",\n  \"downloadTokens\": \"token123\"\n}"
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "YOUR_API_KEY",
+      "value": "your-firebase-api-key"
+    },
+    {
+      "key": "YOUR_PROJECT_ID",
+      "value": "your-firebase-project-id"
+    },
+    {
+      "key": "YOUR_BUCKET_NAME",
+      "value": "your-firebase-bucket-name"
+    },
+    {
+      "key": "YOUR_ID_TOKEN",
+      "value": "your-firebase-id-token"
+    }
+  ]
+}
