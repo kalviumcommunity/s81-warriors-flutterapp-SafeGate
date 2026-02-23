@@ -2,10 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
-import 'auth_service.dart';
-import 'firestore_service.dart';
-import 'storage_service.dart';
-import 'screens/responsive_home.dart';
+import '../services/auth_service.dart';
+import '../services/firestore_service.dart';
+import '../services/storage_service.dart';
+import 'responsive_home.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
