@@ -23,15 +23,15 @@ lib/
 - **lib/**: Contains all the Dart source code for the application.
   - **main.dart**: The root of the application, initializes the app and defines the main widget tree.
   - **screens/**: Houses individual screen widgets for different app pages, promoting separation of UI concerns.
+    - **home_page.dart**: Defines the home screen UI after login.
+    - **login_page.dart**: Provides the login interface.
+    - **welcome_page.dart**: The custom welcome screen with interactive state changes.
   - **widgets/**: For reusable UI components that can be shared across screens.
   - **models/**: Will contain data classes and structures for app data.
   - **services/**: Contains business logic and external service integrations like Firebase.
     - **auth_service.dart**: Handles user authentication logic using Firebase Auth.
     - **firestore_service.dart**: Manages database operations with Cloud Firestore.
-    - **home_page.dart**: Defines the home screen UI after login.
-    - **login_page.dart**: Provides the login interface.
     - **storage_service.dart**: Handles file uploads and downloads to Firebase Storage.
-    - **welcome_page.dart**: The custom welcome screen with interactive state changes.
 
 ### How This Structure Supports Modular App Design
 This structure separates concerns by organizing code into logical layers: UI screens, reusable components, data models, and services. This makes the code easier to maintain, test, and scale. For example, authentication logic is isolated in `services/`, allowing it to be reused across different screens without duplication. The modular design supports adding new features without cluttering the main files, and each directory can be developed and tested independently.
