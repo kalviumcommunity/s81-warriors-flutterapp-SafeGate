@@ -1,0 +1,15 @@
+meta {
+  name: userProfile
+  type: http
+  seq: 3
+}
+
+get {
+  url: https://safegate-flutterapp.firebaseapp.com/users/profile
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer fake_firebase_token
+}
