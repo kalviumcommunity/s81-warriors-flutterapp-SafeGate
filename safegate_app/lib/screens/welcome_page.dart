@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'login_page.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
@@ -47,6 +48,21 @@ class _WelcomePageState extends State<WelcomePage> {
               onPressed: _toggleWelcome,
               child: Text(_isWelcomed ? 'Reset' : 'Welcome Me'),
             ),
+            const SizedBox(height: 20),
+            if (_isWelcomed)
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.deepPurple,
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('Go to Login'),
+              ),
           ],
         ),
       ),
