@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "930670233761",
+    "project_id": "safegate-warriors",
+    "storage_bucket": "safegate-warriors.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930670233761:android:08928b91add8921fa188e0",
+        "android_client_info": {
+          "package_name": "com.example.safegate_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "930670233761-sa4jnnplfon2lqqmmrqj50uf41a1uvl3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.safegate_app",
+            "certificate_hash": "035d0f28be59e6b360413e52dba65b2be71aeff8"
+          }
+        },
+        {
+          "client_id": "930670233761-a6a2d8jlrd7h7fa97hkbmvr3fscv6ba7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWC7FHr6muCJOnURi42dY3X9y7IOicjTM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "930670233761-a6a2d8jlrd7h7fa97hkbmvr3fscv6ba7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
