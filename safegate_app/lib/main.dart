@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'screens/welcome_page.dart';
 import 'screens/dashboard_page.dart';
 import 'screens/widget_tree_demo.dart';
+import 'screens/stateless_stateful_demo.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,14 +19,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'SafeGate App',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         useMaterial3: true,
       ),
-      home: const WidgetTreeDemo(),
+      home: const StatelessStatefulDemo(),
       routes: {
-        '/login': (context) => const WelcomePage(), // Or LoginPage if you prefer
+        '/login': (context) => const WelcomePage(),
         '/dashboard': (context) => const DashboardPage(),
       },
     );
