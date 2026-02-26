@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'services/auth_service.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'services/auth_service.dart';
 import 'screens/welcome_page.dart';
 import 'screens/dashboard_page.dart';
+import 'screens/widget_tree_demo.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -22,20 +23,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: StreamBuilder<User?>(
-        stream: AuthService().user,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
-          }
-          if (snapshot.hasData) {
-            return const DashboardPage();
-          }
-          return const WelcomePage();
-        },
-      ),
+      home: const WidgetTreeDemo(),
       routes: {
         '/login': (context) => const WelcomePage(), // Or LoginPage if you prefer
         '/dashboard': (context) => const DashboardPage(),
