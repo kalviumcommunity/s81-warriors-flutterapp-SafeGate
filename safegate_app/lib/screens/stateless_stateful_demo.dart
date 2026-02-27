@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 class StatelessStatefulDemo extends StatelessWidget {
   const StatelessStatefulDemo({super.key});
@@ -103,12 +104,16 @@ class _InteractiveCounterWidgetState extends State<InteractiveCounterWidget> {
   void _incrementCount() {
     setState(() {
       _count++;
+      // Debug statement for Debug Console demonstration
+      debugPrint('🔢 Counter incremented! Current count: $_count');
+      debugPrint('   Timestamp: ${DateTime.now()}');
     });
   }
 
   void _resetCount() {
     setState(() {
       _count = 0;
+      debugPrint('🔄 Counter reset to 0');
     });
   }
 
@@ -214,6 +219,9 @@ class _InteractiveColorChangerState extends State<InteractiveColorChanger> {
             onChanged: (bool value) {
               setState(() {
                 _isToggled = value;
+                debugPrint('🎨 Color toggle changed!');
+                debugPrint('   New state: ${value ? "Deep Purple Mode" : "Orange Mode"}');
+                debugPrint('   Widget will rebuild with new backgroundColor');
               });
             },
           ),
