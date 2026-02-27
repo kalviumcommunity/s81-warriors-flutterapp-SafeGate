@@ -13,9 +13,12 @@ class DashboardPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard'),
+        backgroundColor: const Color(0xFF0D7377),
+        foregroundColor: Colors.white,
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
+            tooltip: 'Sign Out',
             onPressed: () async {
               await auth.signOut();
               if (context.mounted) {
@@ -25,38 +28,68 @@ class DashboardPage extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (user?.photoURL != null)
-              CircleAvatar(
-                radius: 50,
-                backgroundImage: NetworkImage(user!.photoURL!),
-              )
-            else
-              const CircleAvatar(
-                radius: 50,
-                child: Icon(Icons.person, size: 50),
-              ),
-            const SizedBox(height: 20),
-            Text(
-              'Welcome, ${user?.displayName ?? 'User'}!',
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      body: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              const Color(0xFF0D7377).withAlpha(20),
+              Colors.white,
+            ],
+          ),
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (user?.photoURL != null)
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundImage: NetworkImage(user!.photoURL!),
+                  )
+                else
+                  const CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Color(0xFF14A085),
+                    child: Icon(Icons.person, size: 50, color: Colors.white),
+                  ),
+                const SizedBox(height: 20),
+                Text(
+                  'Welcome, ${user?.displayName ?? 'User'}!',
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF0D7377),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Email: ${user?.email ?? 'N/A'}',
+                  style: const TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+                const SizedBox(height: 40),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/');
+                  },
+                  icon: const Icon(Icons.home),
+                  label: const Text('Go to Home'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF0D7377),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 10),
-            Text(
-              'Email: ${user?.email ?? 'N/A'}',
-              style: const TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            const SizedBox(height: 40),
-            ElevatedButton(
-              onPressed: () {
-                // Navigate to other features
-              },
-              child: const Text('Go to Home'),
-            ),
-          ],
+          ),
         ),
       ),
     );

@@ -4,7 +4,7 @@ class WidgetTreeDemo extends StatefulWidget {
   const WidgetTreeDemo({super.key});
 
   @override
-  _WidgetTreeDemoState createState() => _WidgetTreeDemoState();
+  State<WidgetTreeDemo> createState() => _WidgetTreeDemoState();
 }
 
 class _WidgetTreeDemoState extends State<WidgetTreeDemo> {

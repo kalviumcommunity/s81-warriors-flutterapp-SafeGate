@@ -175,7 +175,7 @@ class _ResponsiveHomeState extends State<ResponsiveHome> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
+            color: Colors.grey.withAlpha(51),
             spreadRadius: 2,
             blurRadius: 5,
             offset: const Offset(0, 3),
@@ -362,7 +362,7 @@ class _ResponsiveHomeState extends State<ResponsiveHome> {
           width: isTablet ? 140 : 120,
           height: isTablet ? 140 : 120,
           decoration: BoxDecoration(
-            color: action['color'].withOpacity(0.1),
+            color: (action['color'] as Color).withAlpha(26),
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: action['color'], width: 2),
           ),
