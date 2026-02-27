@@ -153,3 +153,43 @@ Use `StatefulWidgets` when the UI needs to change based on internal interactions
 
 ### How does Flutter rebuild only the widgets that change?
 Flutter uses a "reconciliation" algorithm during the build phase. When `setState()` is called, the widget is marked as "dirty". During the next frame, Flutter compares the new widget tree with the old one. It only updates the render objects that correspond to the changed widgets, ensuring high-efficient UI updates.
+
+## Responsive Layout
+
+This project includes a `ResponsiveLayout` screen demonstrating how to combine `Container`, `Row`, and `Column` with `MediaQuery` and `Expanded` to create a layout that adapts to different screen sizes.
+
+Code snippet (core idea):
+
+```dart
+final screenWidth = MediaQuery.of(context).size.width;
+final isWide = screenWidth > 600;
+
+Expanded(
+  child: isWide
+    ? Row(children: [Expanded(child: LeftPanel()), SizedBox(width:10), Expanded(child: RightPanel())])
+    : Column(children: [Expanded(child: TopPanel()), SizedBox(height:10), Expanded(child: BottomPanel())]),
+)
+```
+
+How to run and test:
+
+1. Open the project in VS Code or Android Studio.
+2. Run the app and it will start on the `ResponsiveLayout` screen by default.
+3. Test on a phone emulator (e.g., Pixel 5) and a tablet emulator (e.g., iPad / Pixel C) or rotate the device to see layout adjustments.
+
+Screenshots
+
+- Add a screenshot for small screen (portrait): `screenshots/responsive_small.png`
+- Add a screenshot for large screen (landscape/tablet): `screenshots/responsive_large.png`
+
+Reflection
+
+- **Why is responsiveness important?** Mobile devices have varying screen sizes and orientations; responsive layouts ensure consistent UX across devices.
+- **Challenges faced:** Managing spacing and proportions so text doesn't overflow and panels remain balanced across breakpoints.
+- **Improvements:** Use `LayoutBuilder`, flexible breakpoints, and adaptive typography for finer control.
+
+Commit & PR
+
+- Commit message suggestion: `feat: designed responsive layout using rows, columns, and containers`
+- PR title suggestion: `[Sprint-2] Responsive Layout Design – TeamName`
+- PR description: include summary, code snippets, and screenshots (use the README screenshots)
