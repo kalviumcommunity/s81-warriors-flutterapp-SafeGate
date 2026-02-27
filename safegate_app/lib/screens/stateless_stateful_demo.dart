@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 
 class StatelessStatefulDemo extends StatelessWidget {
   const StatelessStatefulDemo({super.key});
@@ -9,34 +8,34 @@ class StatelessStatefulDemo extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Stateless vs Stateful Widgets'),
-        backgroundColor: Colors.indigo,
+        backgroundColor: const Color(0xFF0D7377),
         foregroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+      body: const SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // 1. A StatelessWidget for a static title or banner.
-            const HeaderBannerWidget(
+            HeaderBannerWidget(
               title: 'Stateless Widget Example',
               subtitle: 'This widget is static and does not change once built.',
-              color: Colors.indigoAccent,
+              color: Color(0xFF0D7377),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
 
             // 2. A StatefulWidget for an interactive section.
-            const InteractiveCounterWidget(),
-            const SizedBox(height: 24),
+            InteractiveCounterWidget(),
+            SizedBox(height: 24),
 
-            const HeaderBannerWidget(
+            HeaderBannerWidget(
               title: 'Color Changer Example',
               subtitle: 'Another demonstration of state management.',
-              color: Colors.deepPurpleAccent,
+              color: Color(0xFF14A085),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24),
 
-            const InteractiveColorChanger(),
+            InteractiveColorChanger(),
           ],
         ),
       ),
@@ -63,7 +62,7 @@ class HeaderBannerWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withAlpha(26),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: color, width: 2),
       ),
@@ -136,7 +135,7 @@ class _InteractiveCounterWidgetState extends State<InteractiveCounterWidget> {
               style: const TextStyle(
                 fontSize: 64,
                 fontWeight: FontWeight.bold,
-                color: Colors.indigo,
+                color: Color(0xFF0D7377),
               ),
             ),
             const Text(
@@ -152,7 +151,7 @@ class _InteractiveCounterWidgetState extends State<InteractiveCounterWidget> {
                   icon: const Icon(Icons.add),
                   label: const Text('Increment'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.indigo,
+                    backgroundColor: const Color(0xFF0D7377),
                     foregroundColor: Colors.white,
                   ),
                 ),
@@ -184,14 +183,14 @@ class _InteractiveColorChangerState extends State<InteractiveColorChanger> {
 
   @override
   Widget build(BuildContext context) {
-    final Color backgroundColor = _isToggled ? Colors.deepPurple : Colors.orange;
-    final String statusText = _isToggled ? 'Deep Purple Mode' : 'Orange Mode';
+    final Color backgroundColor = _isToggled ? const Color(0xFF0D7377) : const Color(0xFF14A085);
+    final String statusText = _isToggled ? 'Teal Mode' : 'Emerald Mode';
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 500),
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: backgroundColor.withOpacity(0.2),
+        color: backgroundColor.withAlpha(51),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -215,12 +214,12 @@ class _InteractiveColorChangerState extends State<InteractiveColorChanger> {
             title: const Text('Toggle State and Rebuild UI'),
             subtitle: const Text('This switch updates the internal state.'),
             value: _isToggled,
-            activeColor: Colors.deepPurple,
+            activeTrackColor: const Color(0xFF0D7377),
             onChanged: (bool value) {
               setState(() {
                 _isToggled = value;
                 debugPrint('🎨 Color toggle changed!');
-                debugPrint('   New state: ${value ? "Deep Purple Mode" : "Orange Mode"}');
+                debugPrint('   New state: ${value ? "Teal Mode" : "Emerald Mode"}');
                 debugPrint('   Widget will rebuild with new backgroundColor');
               });
             },

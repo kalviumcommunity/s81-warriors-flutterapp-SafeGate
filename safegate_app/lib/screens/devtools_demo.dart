@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 
 /// DevTools Demo Page
 /// This page demonstrates Flutter's Hot Reload, Debug Console, and DevTools features.
@@ -23,7 +22,7 @@ class _DevToolsDemoState extends State<DevToolsDemo> {
   // HOT RELOAD DEMO: Try changing these values and saving!
   // The app will update instantly without losing the _tapCount state.
   static const String appTitle = 'Hot Reload Demo';  // Try: 'Welcome to Hot Reload!'
-  static const Color primaryColor = Colors.indigo;   // Try: Colors.teal, Colors.purple
+  static const Color primaryColor = Color(0xFF0D7377);   // Try: Colors.teal, Colors.purple
   static const double cardElevation = 4.0;           // Try: 8.0, 12.0
   
   @override
@@ -136,7 +135,7 @@ class _DevToolsDemoState extends State<DevToolsDemo> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.1),
+                color: color.withAlpha(26),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(icon, color: color, size: 32),
@@ -173,10 +172,10 @@ class _DevToolsDemoState extends State<DevToolsDemo> {
   Widget _buildCounterCard() {
     return Card(
       elevation: cardElevation,
-      color: primaryColor.withOpacity(0.05),
+      color: primaryColor.withAlpha(13),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: primaryColor, width: 2),
+        side: const BorderSide(color: primaryColor, width: 2),
       ),
       child: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -217,7 +216,7 @@ class _DevToolsDemoState extends State<DevToolsDemo> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.amber.withOpacity(0.1),
+                color: Colors.amber.withAlpha(26),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Row(

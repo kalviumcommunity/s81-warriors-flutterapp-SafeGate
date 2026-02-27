@@ -448,25 +448,101 @@ These tools transform debugging from guesswork into data-driven analysis.
 
 ---
 
+# Multi-Screen Navigation Using Navigator and Routes
+
+## Project Title
+SafeGate: Multi-Screen Navigation & Route Management
+
+## Short Description
+This module demonstrates how to implement a scalable navigation system in Flutter using the `Navigator` class and **Named Routes**. It features a seamless transition between a Home Screen and a Details (Second) Screen, including data passing via route arguments.
+
+## Navigation Implementation
+
+### 1. Route Configuration (`main.dart`)
+Named routes are defined in the `MaterialApp` widget, providing a centralized mapping of paths to screen widgets.
+
+```dart
+MaterialApp(
+  debugShowCheckedModeBanner: false,
+  initialRoute: '/',
+  routes: {
+    '/': (context) => const HomeScreen(),
+    '/second': (context) => const SecondScreen(),
+    // ... other routes
+  },
+)
+```
+
+### 2. Home Screen (`home_screen.dart`)
+The Home Screen initiates navigation using `Navigator.pushNamed()`, passing a string argument to the target screen.
+
+```dart
+ElevatedButton(
+  onPressed: () {
+    Navigator.pushNamed(
+      context,
+      '/second',
+      arguments: 'Passed from Home Screen with Love!',
+    );
+  },
+  child: const Text('Go to Second Screen'),
+)
+```
+
+### 3. Second Screen (`second_screen.dart`)
+The Second Screen retrieves the passed arguments and allows the user to return using `Navigator.pop()`.
+
+```dart
+@override
+Widget build(BuildContext context) {
+  final String? message = ModalRoute.of(context)?.settings.arguments as String?;
+  
+  return Scaffold(
+    // ...
+    body: Center(
+      child: Column(
+        children: [
+          Text(message ?? 'No data received'),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Back to Home'),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+```
+
+## Screenshots
+
+### Home Screen
+![home_screen_nav.png](home_screen_nav.png)
+
+### Second Screen (with Data)
+![second_screen_nav.png](second_screen_nav.png)
+
+### Navigation Transition
+![nav_transition.gif](nav_transition.gif)
+
+## Reflection
+
+### How does Navigator manage the app’s stack of screens?
+The `Navigator` works like a **Last-In, First-Out (LIFO)** stack. When you use `push()`, a new route is placed on top of the stack. When you use `pop()`, the top route is removed, revealing the previous screen underneath. This stack-based approach manages the history of the user's journey through the app.
+
+### What are the benefits of using named routes in larger applications?
+1. **Centralization**: All routes are defined in one place (`main.dart`), making the navigation structure easy to visualize and manage.
+2. **Readability**: Using strings like `/settings` is more descriptive than manually instantiating `MaterialPageRoute` every time.
+3. **Scalability**: It simplifies complex navigation flows, such as deep linking or conditional routing, as the logic is decoupled from individual widgets.
+4. **Maintenance**: Changing a screen widget only requires updating the map in `main.dart` once, rather than searching through the entire codebase for occurrences of that screen.
+
+### How does Flutter manage the navigation stack?
+Flutter maintains a `Navigator` widget (usually provided by `MaterialApp`) which holds a list of `Route` objects. Each `push` operation adds a `Route` to this list, and each `pop` removes the most recent one. The `Navigator` also handles the transition animations between these routes and manages the lifecycle of the route widgets (e.g., calling `dispose()` when a route is popped).
+
+---
+
 ## Files Modified/Created
 
-- `lib/screens/devtools_demo.dart` - New DevTools demo page
-- `lib/screens/stateless_stateful_demo.dart` - Added debugPrint() statements
-- `lib/main.dart` - Updated to use DevTools demo as home page
-
-## Running the Demo
-
-```bash
-# Navigate to the app directory
-cd safegate_app
-
-# Get dependencies
-flutter pub get
-
-# Run the app
-flutter run
-
-# In another terminal, launch DevTools
-flutter pub global activate devtools
-flutter pub global run devtools
-```
+- `lib/screens/home_screen.dart` - Home screen with "Go to Second Screen" button.
+- `lib/screens/second_screen.dart` - Second screen that displays passed data and has a back button.
+- `lib/main.dart` - Configured `initialRoute` and the `routes` map.
