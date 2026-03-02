@@ -1,0 +1,97 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper Functions for RBAC verification
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function getUserRole() {
+      return request.auth.token.role;
+    }
+    
+    function getUserSociety() {
+      return request.auth.token.society_id;
+    }
+    
+    function isSuperAdmin() {
+      return isAuthenticated() && getUserRole() == 'super_admin';
+    }
+    
+    function isSocietyAdmin(societyId) {
+      return isAuthenticated() && getUserRole() == 'admin' && getUserSociety() == societyId;
+    }
+    
+    function isGuard(societyId) {
+      return isAuthenticated() && getUserRole() == 'guard' && getUserSociety() == societyId;
+    }
+    
+    function isResident(societyId, flatId) {
+      return isAuthenticated() && getUserRole() == 'resident' && getUserSociety() == societyId;
+    }
+
+    // 1. Societies Collection
+    // Only SuperAdmins can manage societies.
+    match /societies/{societyId} {
+      allow read: if isSuperAdmin() || isSocietyAdmin(societyId) || isGuard(societyId) || isResident(societyId, '');
+      allow write: if isSuperAdmin();
+    }
+
+    // 2. Users / Residents Directory
+    // Residents can only view their own properties or family members.
+    match /users/{userId} {
+      // Users can read themselves, admins can read their entire society mapped users
+      allow read: if isSuperAdmin() || request.auth.uid == userId 
+                  || isSocietyAdmin(resource.data.society_id)
+                  || isGuard(resource.data.society_id);
+                  
+      // Only admins can create/update roles for users in their society
+      allow write: if isSuperAdmin() || isSocietyAdmin(request.resource.data.society_id);
+    }
+
+    // 3. Visitor Logs (The core logic)
+    // Structured under: /visitor_logs/{logId}
+    match /visitor_logs/{logId} {
+      // Guards can create and read for their society
+      allow create: if isGuard(request.resource.data.society_id);
+      
+      // Reading rules
+      allow read: if isSuperAdmin() 
+                  || isSocietyAdmin(resource.data.society_id) 
+                  || isGuard(resource.data.society_id)
+                  // Resident can only read if it's targeted at their exact flat/unit
+                  || (isAuthenticated() && getUserRole() == 'resident' && resource.data.target_uid == request.auth.uid);
+                  
+      // Updating existing logs (e.g. Resident Approving/Rejecting)
+      allow update: if isSuperAdmin() 
+                    || isSocietyAdmin(resource.data.society_id)
+                    || isGuard(resource.data.society_id) // Guard overrides/checkouts
+                    // Resident approving their own visitor request
+                    || (isAuthenticated() && getUserRole() == 'resident' && resource.data.target_uid == request.auth.uid && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'resident_note']));
+                    
+      allow delete: if isSuperAdmin(); // Immutable logs policy, only superadmin can manipulate
+    }
+
+    // 4. Blacklist Registry
+    match /blacklist/{personId} {
+      // Guards can view blacklist to block entries
+      allow read: if isSuperAdmin() || isSocietyAdmin(resource.data.society_id) || isGuard(resource.data.society_id);
+      
+      // Strictly Society Admin can add/remove to blacklist
+      allow write: if isSuperAdmin() || isSocietyAdmin(request.resource.data.society_id);
+    }
+    
+    // 5. Emergency Triggers
+    match /emergencies/{alertId} {
+      // Anyone in the society can read the emergency broadcasts
+      allow read: if isAuthenticated() && getUserSociety() == resource.data.society_id;
+      
+      // Guards and Admins can trigger society-wide emergencies
+      allow create: if isSuperAdmin() || isSocietyAdmin(request.resource.data.society_id) || isGuard(request.resource.data.society_id);
+      
+      // Only admins/superadmins can clear/end emergencies
+      allow update, delete: if isSuperAdmin() || isSocietyAdmin(resource.data.society_id);
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../services/auth_service.dart';
-import 'dashboard_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,12 +15,28 @@ class _LoginPageState extends State<LoginPage> {
   final AuthService _auth = AuthService();
   bool _isLoading = false;
   String? _errorMessage;
+  String _selectedRole = 'resident';
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  Future<void> _routeBasedOnRole(User user) async {
+    final role = await _auth.getUserRole(user.uid);
+    if (!mounted) return;
+
+    if (role == 'super_admin') {
+      Navigator.pushNamedAndRemoveUntil(context, '/superadmin', (route) => false);
+    } else if (role == 'admin') {
+      Navigator.pushNamedAndRemoveUntil(context, '/admin', (route) => false);
+    } else if (role == 'guard') {
+      Navigator.pushNamedAndRemoveUntil(context, '/guard', (route) => false);
+    } else {
+      Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => false);
+    }
   }
 
   Future<void> _signIn() async {
@@ -40,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       final user = await _auth.signIn(email, password);
       if (user != null && mounted) {
-        Navigator.pushNamedAndRemoveUntil(context, '/roles', (route) => false);
+        await _routeBasedOnRole(user);
       }
     } catch (e) {
       setState(() {
@@ -70,9 +86,9 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     try {
-      final user = await _auth.signUp(email, password);
+      final user = await _auth.signUp(email, password, _selectedRole);
       if (user != null && mounted) {
-        Navigator.pushNamedAndRemoveUntil(context, '/roles', (route) => false);
+        await _routeBasedOnRole(user);
       }
     } catch (e) {
       setState(() {
@@ -94,9 +110,9 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     try {
-      final user = await _auth.signInWithGoogle();
+      final user = await _auth.signInWithGoogle(_selectedRole);
       if (user != null && mounted) {
-        Navigator.pushNamedAndRemoveUntil(context, '/roles', (route) => false);
+        await _routeBasedOnRole(user);
       }
     } catch (e) {
       if (mounted) {
@@ -235,6 +251,38 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           obscureText: true,
                         ),
+                        const SizedBox(height: 16),
+                        
+                        // RBAC Role Selection Dropdown for SignUp
+                        DropdownButtonFormField<String>(
+                          value: _selectedRole,
+                          dropdownColor: surfaceDark,
+                          decoration: InputDecoration(
+                            labelText: 'Register As (Role)',
+                            labelStyle: const TextStyle(color: Colors.white70),
+                            prefixIcon: Icon(Icons.admin_panel_settings, color: primaryColor),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.white.withAlpha(50)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: primaryColor, width: 2),
+                            ),
+                          ),
+                          items: const [
+                            DropdownMenuItem(value: 'resident', child: Text('Resident', style: TextStyle(color: Colors.white))),
+                            DropdownMenuItem(value: 'guard', child: Text('Security Guard', style: TextStyle(color: Colors.white))),
+                            DropdownMenuItem(value: 'admin', child: Text('Society Admin', style: TextStyle(color: Colors.white))),
+                            DropdownMenuItem(value: 'super_admin', child: Text('Super Admin', style: TextStyle(color: Colors.white))),
+                          ],
+                          onChanged: (value) {
+                            if (value != null) {
+                              setState(() => _selectedRole = value);
+                            }
+                          },
+                        ),
+
                         const SizedBox(height: 24),
                         _isLoading
                             ? CircularProgressIndicator(color: primaryColor)

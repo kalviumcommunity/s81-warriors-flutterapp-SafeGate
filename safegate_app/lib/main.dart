@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:safegate_app/services/firebase_status.dart';
-import 'screens/welcome_page.dart';
-import 'screens/dashboard_page.dart';
-import 'screens/stateless_stateful_demo.dart';
-import 'screens/devtools_demo.dart';
+import 'screens/auth_wrapper.dart';
 import 'screens/home_screen.dart';
-import 'screens/second_screen.dart';
+import 'screens/dashboard_page.dart';
 import 'screens/login_page.dart';
-import 'screens/responsive_layout.dart';
-import 'screens/scrollable_views.dart';
 import 'screens/role_selection_screen.dart';
 import 'screens/guard_dashboard.dart';
 import 'screens/admin_dashboard.dart';
@@ -68,15 +63,10 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const HomeScreen(),
-        '/second': (context) => const SecondScreen(),
+        '/': (context) => const AuthWrapper(),
+        '/home': (context) => const HomeScreen(),
         '/login': (context) => const LoginPage(),
-        '/welcome': (context) => const WelcomePage(),
         '/dashboard': (context) => const DashboardPage(),
-        '/devtools': (context) => const DevToolsDemo(),
-        '/stateless-stateful': (context) => const StatelessStatefulDemo(),
-        '/responsive': (context) => const ResponsiveLayout(),
-        '/scrollable': (context) => const ScrollableViews(),
         '/roles': (context) => const RoleSelectionScreen(),
         '/guard': (context) => const GuardDashboard(),
         '/admin': (context) => const AdminDashboard(),
