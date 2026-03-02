@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:safegate_app/services/firebase_status.dart';
 import 'screens/welcome_page.dart';
 import 'screens/dashboard_page.dart';
 import 'screens/stateless_stateful_demo.dart';
@@ -12,7 +13,18 @@ import 'screens/scrollable_views.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  try {
+    await Firebase.initializeApp();
+    firebaseAvailable = true;
+  } catch (e, st) {
+    // Firebase options may be missing on web (firebase_options.dart not generated).
+    // Log the error and continue so the app can render for development/demo purposes.
+    // Run `flutterfire configure` to generate `lib/firebase_options.dart` and
+    // initialize with `DefaultFirebaseOptions.currentPlatform` for a proper fix.
+    // ignore: avoid_print
+    print('Firebase.initializeApp() failed: $e\n$st');
+    firebaseAvailable = false;
+  }
   runApp(const MyApp());
 }
 

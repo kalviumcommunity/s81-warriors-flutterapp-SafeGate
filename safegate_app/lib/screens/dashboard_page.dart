@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:safegate_app/services/firebase_status.dart';
 import '../services/auth_service.dart';
 
 class DashboardPage extends StatelessWidget {
@@ -7,7 +8,7 @@ class DashboardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final User? user = FirebaseAuth.instance.currentUser;
+    final User? user = firebaseAvailable ? FirebaseAuth.instance.currentUser : null;
     final AuthService auth = AuthService();
 
     return Scaffold(
