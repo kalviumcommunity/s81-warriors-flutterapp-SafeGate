@@ -50,21 +50,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final primaryColor = Theme.of(context).colorScheme.primary;
+
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        title: const Text(
-          'SafeGate',
-          style: TextStyle(
-            fontWeight: FontWeight.w800,
-            color: Colors.white,
-            letterSpacing: 1.5,
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-      ),
       body: Stack(
         children: [
           // Animated gradient background
@@ -76,9 +64,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color(0xFF0A2E36),
-                  Color(0xFF0D7377),
-                  Color(0xFF14A085),
+                  Color(0xFF1E1E1E), // Dark grey
+                  Color(0xFF121212), // Deep black
+                  Color(0xFF0A0A0A), // Darker black
                 ],
                 stops: [0.0, 0.5, 1.0],
               ),
@@ -94,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               height: 200,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white.withAlpha(15),
+                color: primaryColor.withAlpha(15), 
               ),
             ),
           ),
@@ -106,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               height: 250,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white.withAlpha(10),
+                color: primaryColor.withAlpha(10), 
               ),
             ),
           ),
@@ -118,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               height: 100,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white.withAlpha(8),
+                color: primaryColor.withAlpha(8), 
               ),
             ),
           ),
@@ -142,23 +130,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             padding: const EdgeInsets.all(24),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.white.withAlpha(20),
+                              color: const Color(0xFF1E1E1E),
                               border: Border.all(
-                                color: Colors.white.withAlpha(40),
+                                color: primaryColor.withAlpha(80),
                                 width: 2,
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: const Color(0xFF14A085).withAlpha(80),
+                                  color: primaryColor.withAlpha(40),
                                   blurRadius: 40,
                                   spreadRadius: 10,
                                 ),
                               ],
                             ),
-                            child: const Icon(
-                              Icons.shield_rounded,
+                            child: Icon(
+                              Icons.assured_workload_rounded,
                               size: 80,
-                              color: Colors.white,
+                              color: primaryColor,
                             ),
                           ),
                         ),
@@ -206,26 +194,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
                         // Navigation button - Glassmorphism
                         _buildGlassButton(
-                          icon: Icons.explore_rounded,
-                          label: 'Explore Second Screen',
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              '/second',
-                              arguments: 'Passed from Home Screen with Love!',
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                        _buildGlassButton(
                           icon: Icons.lock_open_rounded,
                           label: 'Login / Sign Up',
                           onTap: () {
                             Navigator.pushNamed(context, '/login');
                           },
-                          isPrimary: false,
+                          isPrimary: true,
                         ),
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 50),
 
                         // Feature pills
                         Wrap(

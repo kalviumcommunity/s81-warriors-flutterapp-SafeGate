@@ -15,31 +15,41 @@ class AuthService {
 
   // Sign in with email and password
   Future<User?> signIn(String email, String password) async {
-    if (_auth == null) return null;
+    if (_auth == null) throw Exception('Firebase is not initialized');
     try {
       UserCredential result = await _auth!.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
       return result.user;
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.message ?? e.code);
     } catch (e) {
-      debugPrint(e.toString());
-      return null;
+      final msg = e.toString();
+      if (msg.contains('pigeon') || msg.contains('PlatformException')) {
+        throw Exception('Sign in failed: Please verify Email/Password auth is enabled in Firebase.');
+      }
+      throw Exception(msg);
     }
   }
 
   // Register with email and password
   Future<User?> signUp(String email, String password) async {
-    if (_auth == null) return null;
+    if (_auth == null) throw Exception('Firebase is not initialized');
     try {
       UserCredential result = await _auth!.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       return result.user;
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.message ?? e.code);
     } catch (e) {
-      debugPrint(e.toString());
-      return null;
+      final msg = e.toString();
+      if (msg.contains('pigeon') || msg.contains('PlatformException')) {
+        throw Exception('Registration failed: Please verify Email/Password auth is enabled in Firebase.');
+      }
+      throw Exception(msg);
     }
   }
 
