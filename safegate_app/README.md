@@ -399,6 +399,62 @@ Monitor API requests and responses.
 
 3. **Add debug logging:**
    ```dart
+   debugPrint('App state: $state');
+   ```
+
+---
+
+## Responsive Layout Demo
+
+This demo shows how to build a responsive screen using `Container`, `Row`, and `Column`, and how to adapt the layout with `MediaQuery`.
+
+### File
+- `lib/screens/responsive_layout.dart`
+
+### How it works
+- Uses `MediaQuery.of(context).size.width` to detect screen width.
+- For widths > 600px it displays left/right panels in a `Row`.
+- For smaller widths it stacks the panels vertically in a `Column`.
+- Header and Footer are full-width `Container`s with adaptive heights.
+
+### Register & Run
+Open the app and navigate to the route `/responsive` (registered in `lib/main.dart`).
+
+From project root:
+```bash
+cd safegate_app
+flutter run
+```
+
+Then open the drawer or navigate programmatically:
+```dart
+Navigator.pushNamed(context, '/responsive');
+```
+
+### Code snippet
+```dart
+double screenWidth = MediaQuery.of(context).size.width;
+bool isLarge = screenWidth > 600;
+
+Container(
+  width: isLarge ? 500 : double.infinity,
+  color: Colors.teal,
+  child: Text('Responsive Container'),
+);
+```
+
+### Screenshots
+- `screenshots/responsive_phone.png` (portrait)
+- `screenshots/responsive_tablet.png` (landscape)
+
+Add your screenshots to `safegate_app/screenshots/` and reference them here.
+
+### Reflection
+- **Why responsive design matters:** Mobile devices have diverse sizes and orientations; responsive UIs ensure a consistent and usable experience across devices.
+- **Challenges faced:** Managing spacing and avoiding overflow on narrow screens; ensuring tappable areas remain accessible.
+- **How MediaQuery & Expanded help:** `MediaQuery` provides device metrics; `Expanded` allocates flexible space to children so layouts adapt without hard-coded sizes.
+
+   ```dart
    void _incrementTap() {
      setState(() {
        _tapCount++;
