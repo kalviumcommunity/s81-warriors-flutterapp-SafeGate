@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:safegate_app/services/firebase_status.dart';
 
 class RoleSelectionScreen extends StatelessWidget {
@@ -91,8 +92,27 @@ class RoleSelectionScreen extends StatelessWidget {
 
   Widget _buildRoleCard(BuildContext context, {required String title, required String subtitle, required IconData icon, required Color color, required String route}) {
     return InkWell(
-      onTap: () {
-        Navigator.pushNamedAndRemoveUntil(context, route, (r) => false);
+      onTap: () async {
+        final user = FirebaseAuth.instance.currentUser;
+        if (user != null && firebaseAvailable) {
+          String actualRole = 'resident';
+          if (route == '/admin') actualRole = 'admin';
+          if (route == '/superadmin') actualRole = 'super_admin';
+          if (route == '/guard') actualRole = 'guard';
+          
+          try {
+            await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+              'role': actualRole,
+              'updatedAt': FieldValue.serverTimestamp(),
+            }, SetOptions(merge: true));
+          } catch (e) {
+            debugPrint('Failed to update demo role: $e');
+          }
+        }
+        
+        if (context.mounted) {
+          Navigator.pushNamedAndRemoveUntil(context, route, (r) => false);
+        }
       },
       borderRadius: BorderRadius.circular(16),
       child: Container(
