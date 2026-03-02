@@ -602,3 +602,231 @@ Flutter maintains a `Navigator` widget (usually provided by `MaterialApp`) which
 - `lib/screens/home_screen.dart` - Home screen with "Go to Second Screen" button.
 - `lib/screens/second_screen.dart` - Second screen that displays passed data and has a back button.
 - `lib/main.dart` - Configured `initialRoute` and the `routes` map.
+
+---
+
+# ListView and GridView - Scrollable Views Demo
+
+## Project Title
+SafeGate: Scrollable Views with ListView and GridView
+
+## Short Description
+This demo showcases Flutter's two primary scrollable widgets: `ListView` for vertical and horizontal scrolling lists, and `GridView` for displaying items in a grid layout. The implementation demonstrates best practices for efficient scrolling with builder constructors.
+
+---
+
+## Code Snippets
+
+### ListView.builder (Horizontal Scrolling)
+
+```dart
+SizedBox(
+  height: 200,
+  child: ListView.builder(
+    scrollDirection: Axis.horizontal,
+    itemCount: 10,
+    itemBuilder: (context, index) {
+      return Container(
+        width: 150,
+        margin: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.teal[100 * ((index % 5) + 2)],
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 4,
+              offset: const Offset(2, 2),
+            ),
+          ],
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.credit_card, size: 40, color: Colors.teal[900]),
+              const SizedBox(height: 8),
+              Text(
+                'Card ${index + 1}',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Colors.teal[900],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  ),
+),
+```
+
+### ListView.builder (Vertical with ListTile)
+
+```dart
+SizedBox(
+  height: 250,
+  child: ListView.builder(
+    itemCount: 5,
+    itemBuilder: (context, index) {
+      final statuses = ['Online', 'Offline', 'Away', 'Busy', 'Online'];
+      final colors = [Colors.green, Colors.grey, Colors.orange, Colors.red, Colors.green];
+      return ListTile(
+        leading: CircleAvatar(
+          backgroundColor: Colors.teal[300],
+          child: Text('${index + 1}', style: const TextStyle(color: Colors.white)),
+        ),
+        title: Text('User ${index + 1}'),
+        subtitle: Row(
+          children: [
+            Icon(Icons.circle, size: 10, color: colors[index]),
+            const SizedBox(width: 4),
+            Text(statuses[index]),
+          ],
+        ),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Tapped on User ${index + 1}')),
+          );
+        },
+      );
+    },
+  ),
+),
+```
+
+### GridView.builder Implementation
+
+```dart
+Container(
+  height: 400,
+  padding: const EdgeInsets.symmetric(horizontal: 8),
+  child: GridView.builder(
+    physics: const NeverScrollableScrollPhysics(),
+    shrinkWrap: true,
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 2,
+      crossAxisSpacing: 10,
+      mainAxisSpacing: 10,
+    ),
+    itemCount: 6,
+    itemBuilder: (context, index) {
+      final icons = [Icons.home, Icons.person, Icons.settings, 
+                     Icons.notifications, Icons.security, Icons.info];
+      final labels = ['Home', 'Profile', 'Settings', 
+                      'Alerts', 'Security', 'About'];
+      return Container(
+        decoration: BoxDecoration(
+          color: Colors.primaries[index % Colors.primaries.length],
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icons[index], size: 40, color: Colors.white),
+              const SizedBox(height: 8),
+              Text(
+                labels[index],
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  ),
+),
+```
+
+### GridView.count Implementation
+
+```dart
+GridView.count(
+  crossAxisCount: 3,
+  crossAxisSpacing: 10,
+  mainAxisSpacing: 10,
+  shrinkWrap: true,
+  physics: const NeverScrollableScrollPhysics(),
+  children: [
+    Container(color: Colors.red, child: Center(child: Text('Red'))),
+    Container(color: Colors.green, child: Center(child: Text('Green'))),
+    Container(color: Colors.blue, child: Center(child: Text('Blue'))),
+    Container(color: Colors.yellow, child: Center(child: Text('Yellow'))),
+    Container(color: Colors.purple, child: Center(child: Text('Purple'))),
+    Container(color: Colors.orange, child: Center(child: Text('Orange'))),
+  ],
+),
+```
+
+---
+
+## Screenshots
+
+### Horizontal ListView
+![horizontal_listview.png](horizontal_listview.png)
+*Horizontal scrolling cards with teal color gradient*
+
+### Vertical ListView with ListTiles
+![vertical_listview.png](vertical_listview.png)
+*User list with status indicators*
+
+### GridView Layout
+![gridview_demo.png](gridview_demo.png)
+*2-column grid with colorful tiles and icons*
+
+### GridView.count Example
+![gridview_count.png](gridview_count.png)
+*3-column simple color grid*
+
+---
+
+## Reflection
+
+### How do ListView and GridView improve UI efficiency?
+1. **Memory Efficiency**: Both widgets only render the items currently visible on screen (viewport), rather than all items at once. This is crucial for apps with large datasets.
+2. **Smooth Scrolling**: Flutter's scrollable widgets use optimized rendering pipelines that ensure 60fps scrolling even with complex item layouts.
+3. **Lazy Loading**: Items are built on-demand as they come into view, reducing initial load time and memory footprint.
+4. **Recycling**: When items scroll out of view, their resources can be reclaimed and reused for new items entering the viewport.
+
+### Why is using builder constructors (ListView.builder, GridView.builder) recommended for large data sets?
+| Feature | Regular Constructor | Builder Constructor |
+|---------|---------------------|---------------------|
+| **Rendering** | All items at once | Only visible items |
+| **Memory** | High (all items in memory) | Low (viewport items only) |
+| **Performance** | Slow for large lists | Constant time regardless of list size |
+| **Use Case** | Small, fixed lists (<20 items) | Dynamic/large lists (any size) |
+
+The builder pattern is essential because:
+1. **Lazy Construction**: Items are created only when needed, not upfront
+2. **Scalability**: A list of 10,000 items performs the same as a list of 10 items
+3. **Memory Management**: Only ~15-20 items exist in memory at any time (depending on item size)
+4. **Efficient Updates**: When data changes, only affected visible items need rebuilding
+
+### What are common performance pitfalls to avoid with scrolling views?
+1. **Avoid nested scrollable widgets without proper configuration**: Use `NeverScrollableScrollPhysics()` and `shrinkWrap: true` when nesting scrollables.
+
+2. **Don't use heavy computations in itemBuilder**: Keep build methods fast; pre-compute data outside the builder.
+
+3. **Avoid unnecessary rebuilds**: Use `const` constructors where possible and consider `AutomaticKeepAlive` for preserving state.
+
+4. **Don't forget item keys**: When items can be reordered or removed, provide unique keys to help Flutter's diffing algorithm.
+
+5. **Avoid unbounded dimensions**: Always constrain scrollable widgets with a fixed height/width or use `Expanded`/`Flexible`.
+
+6. **Don't load all images at once**: Use `CachedNetworkImage` or similar for lazy image loading.
+
+7. **Avoid complex layouts per item**: Simplify item widgets; use `RepaintBoundary` for items with animations.
+
+---
+
+## Files Created
+
+- `lib/screens/scrollable_views.dart` - Main demo file with ListView and GridView examples
