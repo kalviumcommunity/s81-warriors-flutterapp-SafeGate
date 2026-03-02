@@ -10,6 +10,10 @@ import 'screens/second_screen.dart';
 import 'screens/login_page.dart';
 import 'screens/responsive_layout.dart';
 import 'screens/scrollable_views.dart';
+import 'screens/role_selection_screen.dart';
+import 'screens/guard_dashboard.dart';
+import 'screens/admin_dashboard.dart';
+import 'screens/super_admin_dashboard.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,20 +41,25 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'SafeGate App',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF0D7377),
-          brightness: Brightness.light,
+        brightness: Brightness.dark,
+        colorScheme: const ColorScheme.dark(
+          primary: Color(0xFF00BFA5), // Premium Teal accent
+          secondary: Color(0xFF00897B), // Dark Teal
+          surface: Color(0xFF1E1E1E),
         ),
+        scaffoldBackgroundColor: const Color(0xFF121212),
         useMaterial3: true,
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF0D7377),
-          foregroundColor: Colors.white,
+          backgroundColor: Color(0xFF1A1A1A),
+          foregroundColor: Color(0xFF00BFA5),
           elevation: 0,
+          centerTitle: true,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF14A085),
-            foregroundColor: Colors.white,
+            backgroundColor: const Color(0xFF00BFA5),
+            foregroundColor: Colors.black87,
+            elevation: 2,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -68,6 +77,10 @@ class MyApp extends StatelessWidget {
         '/stateless-stateful': (context) => const StatelessStatefulDemo(),
         '/responsive': (context) => const ResponsiveLayout(),
         '/scrollable': (context) => const ScrollableViews(),
+        '/roles': (context) => const RoleSelectionScreen(),
+        '/guard': (context) => const GuardDashboard(),
+        '/admin': (context) => const AdminDashboard(),
+        '/superadmin': (context) => const SuperAdminDashboard(),
       },
     );
   }
