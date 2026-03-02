@@ -7,6 +7,7 @@ import 'screens/devtools_demo.dart';
 import 'screens/home_screen.dart';
 import 'screens/second_screen.dart';
 import 'screens/login_page.dart';
+import 'screens/responsive_layout.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
         '/dashboard': (context) => const DashboardPage(),
         '/devtools': (context) => const DevToolsDemo(),
         '/stateless-stateful': (context) => const StatelessStatefulDemo(),
+        '/responsive': (context) => const ResponsiveLayout(),
       },
     );
   }
