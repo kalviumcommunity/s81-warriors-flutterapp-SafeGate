@@ -9,6 +9,7 @@ import 'screens/home_screen.dart';
 import 'screens/second_screen.dart';
 import 'screens/login_page.dart';
 import 'screens/responsive_layout.dart';
+import 'screens/user_input_form.dart';
 import 'screens/scrollable_views.dart';
 
 void main() async {
@@ -60,6 +61,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const HomeScreen(),
+        '/user-input': (context) => const UserInputForm(),
         '/second': (context) => const SecondScreen(),
         '/login': (context) => const LoginPage(),
         '/welcome': (context) => const WelcomePage(),
