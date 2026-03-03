@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/auth_service.dart';
+import '../widgets/safe_button.dart';
+import '../widgets/safe_text_field.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -214,41 +216,17 @@ class _LoginPageState extends State<LoginPage> {
                               ],
                             ),
                           ),
-                        TextField(
+                        SafeTextField(
                           controller: _emailController,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            labelText: 'Email',
-                            labelStyle: const TextStyle(color: Colors.white70),
-                            prefixIcon: Icon(Icons.email_outlined, color: primaryColor),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Colors.white.withAlpha(50)),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: primaryColor, width: 2),
-                            ),
-                          ),
+                          labelText: 'Email',
+                          prefixIcon: Icons.email_outlined,
                           keyboardType: TextInputType.emailAddress,
                         ),
                         const SizedBox(height: 16),
-                        TextField(
+                        SafeTextField(
                           controller: _passwordController,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            labelText: 'Password',
-                            labelStyle: const TextStyle(color: Colors.white70),
-                            prefixIcon: Icon(Icons.lock_outline, color: primaryColor),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: Colors.white.withAlpha(50)),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              borderSide: BorderSide(color: primaryColor, width: 2),
-                            ),
-                          ),
+                          labelText: 'Password',
+                          prefixIcon: Icons.lock_outline,
                           obscureText: true,
                         ),
                         const SizedBox(height: 16),
@@ -284,46 +262,19 @@ class _LoginPageState extends State<LoginPage> {
                         ),
 
                         const SizedBox(height: 24),
-                        _isLoading
-                            ? CircularProgressIndicator(color: primaryColor)
-                            : Column(
+                        Column(
                                 children: [
-                                  SizedBox(
-                                    width: double.infinity,
-                                    height: 50,
-                                    child: ElevatedButton(
-                                      onPressed: _signIn,
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: primaryColor,
-                                        foregroundColor: Colors.black87,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                      ),
-                                      child: const Text(
-                                        'Login',
-                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
+                                  SafeButton(
+                                    text: 'Login',
+                                    onPressed: _signIn,
+                                    isLoading: _isLoading,
                                   ),
                                   const SizedBox(height: 12),
-                                  SizedBox(
-                                    width: double.infinity,
-                                    height: 50,
-                                    child: OutlinedButton(
-                                      onPressed: _signUp,
-                                      style: OutlinedButton.styleFrom(
-                                        foregroundColor: primaryColor,
-                                        side: BorderSide(color: primaryColor),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                      ),
-                                      child: const Text(
-                                        'Sign Up',
-                                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
+                                  SafeButton(
+                                    text: 'Sign Up',
+                                    onPressed: _signUp,
+                                    isPrimary: false,
+                                    isLoading: _isLoading,
                                   ),
                                 ],
                               ),
@@ -346,25 +297,12 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 24),
 
                   // Google Sign-In button
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton.icon(
-                      onPressed: _isLoading ? null : _signInWithGoogle,
-                      icon: const Icon(Icons.g_mobiledata, size: 28),
-                      label: const Text(
-                        'Sign in with Google',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.black87,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        elevation: 3,
-                      ),
-                    ),
+                  SafeButton(
+                    text: 'Sign in with Google',
+                    onPressed: _signInWithGoogle,
+                    icon: Icons.g_mobiledata,
+                    isPrimary: true, // Styling for google button can be adjusted in widget if needed
+                    isLoading: _isLoading,
                   ),
                   const SizedBox(height: 20),
                   TextButton(
