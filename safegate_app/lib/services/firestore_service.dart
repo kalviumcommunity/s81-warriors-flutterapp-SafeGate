@@ -1,12 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:safegate_app/services/firebase_status.dart';
+
+// Guards Firestore usage when Firebase isn't initialized (e.g., web without
+// firebase_options.dart). In that case methods become no-ops or return empty
+// streams to avoid throwing during widget build.
 
 class FirestoreService {
-  final CollectionReference tasks =
-      FirebaseFirestore.instance.collection('tasks');
+  FirebaseFirestore? _db;
+  CollectionReference? tasks;
+
+  FirestoreService() {
+    if (firebaseAvailable) {
+      _db = FirebaseFirestore.instance;
+      tasks = _db!.collection('tasks');
+    }
+  }
 
   // Add task with optional image URL
-  Future<void> addTask(String title, [String? imageUrl]) {
-    return tasks.add({
+  Future<void> addTask(String title, [String? imageUrl]) async {
+    if (tasks == null) return;
+    return tasks!.add({
       'title': title,
       'imageUrl': imageUrl,
       'createdAt': Timestamp.now(),
@@ -16,18 +29,21 @@ class FirestoreService {
 
   // Get tasks stream
   Stream<QuerySnapshot> getTasks() {
-    return tasks.orderBy('createdAt', descending: true).snapshots();
+    if (tasks == null) return const Stream.empty();
+    return tasks!.orderBy('createdAt', descending: true).snapshots();
   }
 
   // Update task completion
-  Future<void> toggleTaskCompletion(String docId, bool currentStatus) {
-    return tasks.doc(docId).update({
+  Future<void> toggleTaskCompletion(String docId, bool currentStatus) async {
+    if (tasks == null) return;
+    return tasks!.doc(docId).update({
       'isCompleted': !currentStatus,
     });
   }
 
   // Delete task
-  Future<void> deleteTask(String docId) {
-    return tasks.doc(docId).delete();
+  Future<void> deleteTask(String docId) async {
+    if (tasks == null) return;
+    return tasks!.doc(docId).delete();
   }
 }

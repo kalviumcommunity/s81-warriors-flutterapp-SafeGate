@@ -5,6 +5,9 @@ import 'screens/auth_wrapper.dart';
 import 'screens/home_screen.dart';
 import 'screens/dashboard_page.dart';
 import 'screens/login_page.dart';
+import 'screens/responsive_layout.dart';
+import 'screens/user_input_form.dart';
+import 'screens/scrollable_views.dart';
 import 'screens/role_selection_screen.dart';
 import 'screens/guard_dashboard.dart';
 import 'screens/admin_dashboard.dart';
@@ -63,6 +66,10 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
+        '/': (context) => const HomeScreen(),
+        '/user-input': (context) => const UserInputForm(),
+        '/second': (context) => const SecondScreen(),
+
         '/': (context) => const AuthWrapper(),
         '/home': (context) => const HomeScreen(),
         '/login': (context) => const LoginPage(),

@@ -201,6 +201,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           },
                           isPrimary: true,
                         ),
+                        const SizedBox(height: 16),
+                        _buildGlassButton(
+                          icon: Icons.assignment_turned_in_rounded,
+                          label: 'User Input Form',
+                          onTap: () {
+                            Navigator.pushNamed(context, '/user-input');
+                          },
+                        ),
                         const SizedBox(height: 50),
 
                         // Feature pills

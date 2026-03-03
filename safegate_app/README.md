@@ -234,6 +234,7 @@ class _DevToolsDemoState extends State<DevToolsDemo> {
 | **Use Case** | UI changes | Logic/initialization changes |
 | **Terminal Key** | `r` | `R` |
 
+
 ### Screenshot Placeholder
 ![Hot Reload Demo](hot_reload_demo.png)
 *App showing instant UI changes after Hot Reload*
@@ -830,3 +831,117 @@ The builder pattern is essential because:
 ## Files Created
 
 - `lib/screens/scrollable_views.dart` - Main demo file with ListView and GridView examples
+
+---
+
+# [Sprint-2] Handling User Input with Forms
+
+## Project Title
+SafeGate: User Input Form with Validation
+
+## Short Description
+This form demonstrates how to capture user data safely using `TextFormField`, validate inputs with a `Form` and `GlobalKey<FormState>`, and provide user feedback through `SnackBar`.
+
+## Code Snippets
+
+### TextFormField Inputs (Name and Email)
+```dart
+TextFormField(
+  controller: _nameController,
+  decoration: const InputDecoration(
+    labelText: 'Name',
+    border: OutlineInputBorder(),
+  ),
+  validator: (value) {
+    final name = value?.trim() ?? '';
+    if (name.isEmpty) {
+      return 'Please enter your name';
+    }
+    return null;
+  },
+)
+```
+
+```dart
+TextFormField(
+  controller: _emailController,
+  decoration: const InputDecoration(
+    labelText: 'Email',
+    border: OutlineInputBorder(),
+  ),
+  keyboardType: TextInputType.emailAddress,
+  validator: (value) {
+    final email = value?.trim() ?? '';
+    if (email.isEmpty) {
+      return 'Please enter your email';
+    }
+    if (!email.contains('@')) {
+      return 'Enter a valid email address';
+    }
+    return null;
+  },
+)
+```
+
+### Submit Button + Validation Trigger
+```dart
+ElevatedButton(
+  onPressed: _submit,
+  child: const Text('Submit'),
+)
+```
+
+### Form Submission Feedback
+```dart
+void _submit() {
+  if (_formKey.currentState?.validate() ?? false) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Form Submitted Successfully!')),
+    );
+    _formKey.currentState?.reset();
+    _nameController.clear();
+    _emailController.clear();
+  }
+}
+```
+
+## Screenshots
+
+### Before Input
+![before_input.png](before_input.png)
+
+### Validation Errors
+![validation_errors.png](validation_errors.png)
+
+### Success SnackBar
+![success_snackbar.png](success_snackbar.png)
+
+## Reflection
+
+### Why is input validation important in mobile apps?
+Input validation prevents incorrect or unsafe data from being submitted, improves data quality, and gives users clear guidance to fix mistakes early.
+
+### What’s the difference between TextField and TextFormField?
+`TextField` is a basic input widget for raw text entry, while `TextFormField` integrates with `Form` and supports built-in validation through the `validator` callback.
+
+### How does form state management simplify validation?
+Using `GlobalKey<FormState>` centralizes validation (`validate()`), reset (`reset()`), and submission flow, making multi-field forms easier to manage and maintain.
+
+## Test and Verify
+
+1. Run the app and open the User Input Form screen.
+2. Tap Submit with empty fields and verify inline errors.
+3. Enter invalid email (without `@`) and verify email error.
+4. Enter valid name/email and verify success `SnackBar`.
+5. Confirm fields reset after successful submission.
+
+## Submission Checklist
+
+- Commit message:
+  - `feat: implemented user input form with validation`
+- Pull request title:
+  - `[Sprint-2] Handling User Input with Forms – TeamName`
+- PR description should include:
+  - Summary of implemented form functionality
+  - Screenshots (before input, validation errors, success)
+  - Reflection on input handling and validation
