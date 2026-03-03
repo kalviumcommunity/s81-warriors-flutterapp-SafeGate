@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../services/auth_service.dart';
-import 'dashboard_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,6 +15,7 @@ class _LoginPageState extends State<LoginPage> {
   final AuthService _auth = AuthService();
   bool _isLoading = false;
   String? _errorMessage;
+  String _selectedRole = 'resident';
 
   @override
   void dispose() {
@@ -23,30 +24,43 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  Future<void> _routeBasedOnRole(User user) async {
+    final role = await _auth.getUserRole(user.uid);
+    if (!mounted) return;
+
+    if (role == 'super_admin') {
+      Navigator.pushNamedAndRemoveUntil(context, '/superadmin', (route) => false);
+    } else if (role == 'admin') {
+      Navigator.pushNamedAndRemoveUntil(context, '/admin', (route) => false);
+    } else if (role == 'guard') {
+      Navigator.pushNamedAndRemoveUntil(context, '/guard', (route) => false);
+    } else {
+      Navigator.pushNamedAndRemoveUntil(context, '/dashboard', (route) => false);
+    }
+  }
+
   Future<void> _signIn() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      setState(() => _errorMessage = 'Please enter both email and password.');
+      return;
+    }
+
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
     try {
-      final user = await _auth.signIn(
-        _emailController.text.trim(),
-        _passwordController.text.trim(),
-      );
+      final user = await _auth.signIn(email, password);
       if (user != null && mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const DashboardPage()),
-        );
-      } else {
-        setState(() {
-          _errorMessage = 'Login failed. Please check your credentials.';
-        });
+        await _routeBasedOnRole(user);
       }
     } catch (e) {
       setState(() {
-        _errorMessage = e.toString();
+        _errorMessage = e.toString().replaceFirst('Exception: ', '').split('\n').first;
       });
     } finally {
       if (mounted) {
@@ -58,29 +72,27 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _signUp() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      setState(() => _errorMessage = 'Please enter both email and password.');
+      return;
+    }
+
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
     try {
-      final user = await _auth.signUp(
-        _emailController.text.trim(),
-        _passwordController.text.trim(),
-      );
+      final user = await _auth.signUp(email, password, _selectedRole);
       if (user != null && mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const DashboardPage()),
-        );
-      } else {
-        setState(() {
-          _errorMessage = 'Registration failed. Try again.';
-        });
+        await _routeBasedOnRole(user);
       }
     } catch (e) {
       setState(() {
-        _errorMessage = e.toString();
+        _errorMessage = e.toString().replaceFirst('Exception: ', '').split('\n').first;
       });
     } finally {
       if (mounted) {
@@ -98,17 +110,14 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     try {
-      final user = await _auth.signInWithGoogle();
+      final user = await _auth.signInWithGoogle(_selectedRole);
       if (user != null && mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const DashboardPage()),
-        );
+        await _routeBasedOnRole(user);
       }
     } catch (e) {
       if (mounted) {
         setState(() {
-          _errorMessage = e.toString();
+          _errorMessage = e.toString().replaceFirst('Exception: ', '');
         });
       }
     } finally {
@@ -122,14 +131,20 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final primaryColor = theme.colorScheme.primary;
+    final bgDark = theme.scaffoldBackgroundColor;
+    final surfaceDark = theme.colorScheme.surface;
+
     return Scaffold(
+      backgroundColor: bgDark,
       body: Container(
         width: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFF0D7377), Color(0xFF14A085)],
+            colors: [Color(0xFF1E1E1E), Color(0xFF0A0A0A)],
           ),
         ),
         child: SafeArea(
@@ -139,23 +154,23 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(
-                    Icons.lock_rounded,
+                  Icon(
+                    Icons.assured_workload_rounded,
                     size: 80,
-                    color: Colors.white,
+                    color: primaryColor,
                   ),
                   const SizedBox(height: 16),
-                  const Text(
+                  Text(
                     'SafeGate Login',
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: primaryColor,
                     ),
                   ),
                   const SizedBox(height: 8),
                   const Text(
-                    'Sign in to continue',
+                    'Sign in to your premium account',
                     style: TextStyle(color: Colors.white70, fontSize: 16),
                   ),
                   const SizedBox(height: 40),
@@ -164,11 +179,12 @@ class _LoginPageState extends State<LoginPage> {
                   Container(
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: surfaceDark,
                       borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: primaryColor.withAlpha(50), width: 1),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withAlpha(40),
+                          color: Colors.black.withAlpha(100),
                           blurRadius: 20,
                           offset: const Offset(0, 10),
                         ),
@@ -181,18 +197,18 @@ class _LoginPageState extends State<LoginPage> {
                             padding: const EdgeInsets.all(12),
                             margin: const EdgeInsets.only(bottom: 16),
                             decoration: BoxDecoration(
-                              color: Colors.red.withAlpha(26),
+                              color: Colors.redAccent.withAlpha(26),
                               borderRadius: BorderRadius.circular(8),
-                              border: Border.all(color: Colors.red.withAlpha(77)),
+                              border: Border.all(color: Colors.redAccent.withAlpha(100)),
                             ),
                             child: Row(
                               children: [
-                                const Icon(Icons.error_outline, color: Colors.red, size: 20),
+                                const Icon(Icons.error_outline, color: Colors.redAccent, size: 20),
                                 const SizedBox(width: 8),
                                 Expanded(
                                   child: Text(
                                     _errorMessage!,
-                                    style: const TextStyle(color: Colors.red, fontSize: 13),
+                                    style: const TextStyle(color: Colors.redAccent, fontSize: 13),
                                   ),
                                 ),
                               ],
@@ -200,15 +216,18 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         TextField(
                           controller: _emailController,
+                          style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             labelText: 'Email',
-                            prefixIcon: const Icon(Icons.email_outlined, color: Color(0xFF0D7377)),
-                            border: OutlineInputBorder(
+                            labelStyle: const TextStyle(color: Colors.white70),
+                            prefixIcon: Icon(Icons.email_outlined, color: primaryColor),
+                            enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.white.withAlpha(50)),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: Color(0xFF0D7377), width: 2),
+                              borderSide: BorderSide(color: primaryColor, width: 2),
                             ),
                           ),
                           keyboardType: TextInputType.emailAddress,
@@ -216,22 +235,57 @@ class _LoginPageState extends State<LoginPage> {
                         const SizedBox(height: 16),
                         TextField(
                           controller: _passwordController,
+                          style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             labelText: 'Password',
-                            prefixIcon: const Icon(Icons.lock_outline, color: Color(0xFF0D7377)),
-                            border: OutlineInputBorder(
+                            labelStyle: const TextStyle(color: Colors.white70),
+                            prefixIcon: Icon(Icons.lock_outline, color: primaryColor),
+                            enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.white.withAlpha(50)),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: Color(0xFF0D7377), width: 2),
+                              borderSide: BorderSide(color: primaryColor, width: 2),
                             ),
                           ),
                           obscureText: true,
                         ),
+                        const SizedBox(height: 16),
+                        
+                        // RBAC Role Selection Dropdown for SignUp
+                        DropdownButtonFormField<String>(
+                          value: _selectedRole,
+                          dropdownColor: surfaceDark,
+                          decoration: InputDecoration(
+                            labelText: 'Register As (Role)',
+                            labelStyle: const TextStyle(color: Colors.white70),
+                            prefixIcon: Icon(Icons.admin_panel_settings, color: primaryColor),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.white.withAlpha(50)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: primaryColor, width: 2),
+                            ),
+                          ),
+                          items: const [
+                            DropdownMenuItem(value: 'resident', child: Text('Resident', style: TextStyle(color: Colors.white))),
+                            DropdownMenuItem(value: 'guard', child: Text('Security Guard', style: TextStyle(color: Colors.white))),
+                            DropdownMenuItem(value: 'admin', child: Text('Society Admin', style: TextStyle(color: Colors.white))),
+                            DropdownMenuItem(value: 'super_admin', child: Text('Super Admin', style: TextStyle(color: Colors.white))),
+                          ],
+                          onChanged: (value) {
+                            if (value != null) {
+                              setState(() => _selectedRole = value);
+                            }
+                          },
+                        ),
+
                         const SizedBox(height: 24),
                         _isLoading
-                            ? const CircularProgressIndicator(color: Color(0xFF0D7377))
+                            ? CircularProgressIndicator(color: primaryColor)
                             : Column(
                                 children: [
                                   SizedBox(
@@ -240,8 +294,8 @@ class _LoginPageState extends State<LoginPage> {
                                     child: ElevatedButton(
                                       onPressed: _signIn,
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: const Color(0xFF0D7377),
-                                        foregroundColor: Colors.white,
+                                        backgroundColor: primaryColor,
+                                        foregroundColor: Colors.black87,
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(12),
                                         ),
@@ -259,8 +313,8 @@ class _LoginPageState extends State<LoginPage> {
                                     child: OutlinedButton(
                                       onPressed: _signUp,
                                       style: OutlinedButton.styleFrom(
-                                        foregroundColor: const Color(0xFF0D7377),
-                                        side: const BorderSide(color: Color(0xFF0D7377)),
+                                        foregroundColor: primaryColor,
+                                        side: BorderSide(color: primaryColor),
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(12),
                                         ),
@@ -281,12 +335,12 @@ class _LoginPageState extends State<LoginPage> {
                   // Divider
                   const Row(
                     children: [
-                      Expanded(child: Divider(color: Colors.white54)),
+                      Expanded(child: Divider(color: Colors.white24)),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16),
-                        child: Text('OR', style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
+                        child: Text('OR', style: TextStyle(color: Colors.white54, fontWeight: FontWeight.bold)),
                       ),
-                      Expanded(child: Divider(color: Colors.white54)),
+                      Expanded(child: Divider(color: Colors.white24)),
                     ],
                   ),
                   const SizedBox(height: 24),
@@ -315,9 +369,9 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 20),
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: const Text(
+                    child: Text(
                       '← Back to Home',
-                      style: TextStyle(color: Colors.white, fontSize: 14),
+                      style: TextStyle(color: primaryColor, fontSize: 14),
                     ),
                   ),
                 ],
