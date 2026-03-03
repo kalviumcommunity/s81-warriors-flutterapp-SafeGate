@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'screens/welcome_page.dart';
 import 'screens/dashboard_page.dart';
 import 'screens/stateless_stateful_demo.dart';
@@ -12,7 +12,7 @@ import 'screens/scrollable_views.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
