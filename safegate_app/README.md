@@ -945,3 +945,270 @@ Using `GlobalKey<FormState>` centralizes validation (`validate()`), reset (`rese
   - Summary of implemented form functionality
   - Screenshots (before input, validation errors, success)
   - Reflection on input handling and validation
+
+---
+
+# Local State Management with setState()
+
+## Project Title
+SafeGate: Understanding setState() and Local State Management
+
+## Short Description
+This demo showcases how to use `setState()` for managing local state in Flutter. It demonstrates the difference between `StatelessWidget` and `StatefulWidget`, and how Flutter's reactive model efficiently rebuilds only affected parts of the UI when state changes.
+
+---
+
+## 1. Stateful vs Stateless Widgets
+
+### StatelessWidget
+- Has **no internal state** — it doesn't change once built
+- Receives all data through its constructor
+- Examples: static text, app logo, navigation bars
+- **Analogy**: Think of it as a **photograph** — fixed and unchanging
+
+### StatefulWidget  
+- Can **change dynamically** based on user interactions or variable updates
+- Maintains mutable state that can trigger UI rebuilds
+- Examples: counter app, toggle buttons, form inputs
+- **Analogy**: Think of it as a **live camera feed** — it updates whenever something happens
+
+---
+
+## 2. How setState() Works
+
+The `setState()` method tells Flutter that the widget's data has changed and the UI needs to update.
+
+```dart
+setState(() {
+  counter++;
+});
+```
+
+This triggers Flutter's rendering engine to **rebuild only the affected parts** of the UI, not the entire app. Flutter uses a reconciliation algorithm to compare the old and new widget trees and updates only what's different.
+
+---
+
+## 3. Code Implementation
+
+### File: `lib/screens/state_management_demo.dart`
+
+```dart
+import 'package:flutter/material.dart';
+
+class StateManagementDemo extends StatefulWidget {
+  const StateManagementDemo({super.key});
+
+  @override
+  State<StateManagementDemo> createState() => _StateManagementDemoState();
+}
+
+class _StateManagementDemoState extends State<StateManagementDemo> {
+  int _counter = 0;
+
+  /// Increments the counter and triggers a UI rebuild
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+    debugPrint('Counter incremented to $_counter');
+  }
+
+  /// Decrements the counter (only if > 0) and triggers a UI rebuild
+  void _decrementCounter() {
+    setState(() {
+      if (_counter > 0) _counter--;
+    });
+    debugPrint('Counter decremented to $_counter');
+  }
+
+  /// Resets the counter to zero
+  void _resetCounter() {
+    setState(() {
+      _counter = 0;
+    });
+    debugPrint('Counter reset to 0');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('State Management Demo'),
+        backgroundColor: _counter >= 10 ? Colors.green : Colors.blue,
+      ),
+      body: Container(
+        // Conditional background color based on counter value
+        color: _getBackgroundColor(),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Button pressed:', style: TextStyle(fontSize: 18)),
+              Text(
+                '$_counter times',
+                style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: _decrementCounter,
+                    icon: const Icon(Icons.remove),
+                    label: const Text('Decrement'),
+                  ),
+                  const SizedBox(width: 20),
+                  ElevatedButton.icon(
+                    onPressed: _incrementCounter,
+                    icon: const Icon(Icons.add),
+                    label: const Text('Increment'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Returns background color based on counter thresholds
+  Color _getBackgroundColor() {
+    if (_counter >= 10) {
+      return Colors.greenAccent.withOpacity(0.3);
+    } else if (_counter >= 5) {
+      return Colors.yellowAccent.withOpacity(0.3);
+    } else {
+      return Colors.white;
+    }
+  }
+}
+```
+
+### Key Features Demonstrated:
+- **Local state variable**: `_counter` stores the current count
+- **setState() for updates**: Each button wraps its logic in `setState()`
+- **Conditional UI**: Background color changes based on thresholds (5, 10)
+- **Visual feedback**: AppBar color changes when counter reaches 10
+
+---
+
+## 4. Conditional State Updates
+
+The demo shows how UI behavior changes based on state values:
+
+```dart
+/// Background color changes based on counter threshold
+Color _getBackgroundColor() {
+  if (_counter >= 10) {
+    return Colors.greenAccent.withOpacity(0.3);  // Green when >= 10
+  } else if (_counter >= 5) {
+    return Colors.yellowAccent.withOpacity(0.3); // Yellow when >= 5
+  } else {
+    return Colors.white;                          // White otherwise
+  }
+}
+```
+
+This pattern is useful for:
+- Progress indicators
+- Achievement unlocks
+- Form validation visual feedback
+- Dark/light theme toggles
+
+---
+
+## 5. Common Mistakes to Avoid
+
+### ❌ Updating State Without setState()
+```dart
+// WRONG - UI won't update!
+void _incrementCounter() {
+  _counter++;  // Missing setState()
+}
+
+// CORRECT
+void _incrementCounter() {
+  setState(() {
+    _counter++;
+  });
+}
+```
+
+### ❌ Calling setState() Inside build()
+```dart
+// WRONG - Causes infinite rebuild loop!
+@override
+Widget build(BuildContext context) {
+  setState(() { _counter++; });  // DON'T DO THIS
+  return Text('$_counter');
+}
+```
+
+### ❌ Unnecessary Full Rebuilds
+```dart
+// BETTER PRACTICE: Split into smaller widgets
+// Instead of one large StatefulWidget, use composition:
+class CounterDisplay extends StatelessWidget {
+  final int count;
+  const CounterDisplay({required this.count});
+  
+  @override
+  Widget build(BuildContext context) => Text('$count');
+}
+```
+
+---
+
+## Screenshots
+
+### Initial State (counter = 0)
+![state_management_initial.png](state_management_initial.png)
+
+### After Increment (counter >= 5)
+![state_management_yellow.png](state_management_yellow.png)
+
+### Threshold Reached (counter >= 10)
+![state_management_green.png](state_management_green.png)
+
+---
+
+## Reflection
+
+### What's the difference between Stateless and Stateful widgets?
+- **StatelessWidget**: Immutable, receives all data via constructor, never changes after being built. Use for static UI like icons, labels, or containers.
+- **StatefulWidget**: Mutable, maintains internal state via a `State` object, can rebuild when state changes. Use for interactive elements like buttons, forms, or animations.
+
+### Why is setState() important for Flutter's reactive model?
+`setState()` is the mechanism that notifies Flutter's framework that internal state has changed. When called:
+1. The widget is marked as "dirty" (needs rebuild)
+2. During the next frame, Flutter calls `build()` again
+3. The new widget tree is compared with the old one
+4. Only changed parts are updated in the render tree
+
+Without `setState()`, Flutter has no way to know your data changed, and the UI remains stale.
+
+### How can improper use of setState() affect performance?
+1. **Calling setState() too frequently**: Rapid calls (e.g., on every frame) can cause excessive rebuilds and dropped frames
+2. **Rebuilding large widget trees**: If setState() is called in a parent widget, all children rebuild even if unchanged
+3. **Calling setState() in build()**: Creates infinite loops as each rebuild triggers another setState()
+4. **Not using const constructors**: Without `const`, even unchanged widgets get recreated
+
+**Best Practices**:
+- Keep StatefulWidgets small and focused
+- Use `const` constructors where possible
+- Consider state management solutions (Provider, Riverpod, Bloc) for complex state
+- Use Flutter DevTools to profile widget rebuilds
+
+---
+
+## To Run This Demo
+
+1. Navigate to the SafeGate app: `cd safegate_app`
+2. Run the app: `flutter run`
+3. Navigate to the State Management Demo screen
+4. Test the increment/decrement buttons and observe:
+   - Counter updates
+   - Background color changes at thresholds (5, 10)
+   - AppBar color change at 10
+   - Debug console logs showing state changes
