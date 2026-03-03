@@ -1212,3 +1212,102 @@ Without `setState()`, Flutter has no way to know your data changed, and the UI r
    - Background color changes at thresholds (5, 10)
    - AppBar color change at 10
    - Debug console logs showing state changes
+---
+
+# Reusable Custom Widgets for Modular UI Design
+
+## Project Title
+SafeGate: Modular UI with Reusable Custom Widgets
+
+## Short Description
+This module demonstrates how to refactor a Flutter UI into smaller, self-contained, and reusable widgets. By creating custom components like `SafeButton`, `SafeTextField`, and `SafeStatCard`, we've made the codebase cleaner, improved maintainability, and ensured a consistent design across multiple screens (Login, Admin Dashboard, and Guard Dashboard).
+
+## Custom Widgets Implementation
+
+### 1. `SafeButton` (Stateless)
+A versatile button widget that supports primary/outlined styles, icons, and loading states.
+Located at: `lib/widgets/safe_button.dart`
+
+```dart
+SafeButton(
+  text: 'Login',
+  onPressed: _signIn,
+  isLoading: _isLoading,
+),
+```
+
+### 2. `SafeTextField` (Stateless)
+A styled text input field with consistent borders, icons, and focus effects.
+Located at: `lib/widgets/safe_text_field.dart`
+
+```dart
+SafeTextField(
+  controller: _emailController,
+  labelText: 'Email',
+  prefixIcon: Icons.email_outlined,
+),
+```
+
+### 3. `SafeStatCard` (Stateless)
+A dashboard component for displaying key metrics with a label and count.
+Located at: `lib/widgets/safe_stat_card.dart`
+
+```dart
+SafeStatCard(
+  title: 'Inside Now',
+  count: '42',
+  color: Colors.teal,
+),
+```
+
+### 4. `SafeManagementCard` (Stateless)
+An interactive portal card for navigation and management actions.
+Located at: `lib/widgets/safe_management_card.dart`
+
+```dart
+SafeManagementCard(
+  icon: Icons.people,
+  title: 'Resident Directory',
+  color: Colors.teal,
+  onTap: () => Navigator.pushNamed(context, '/residents'),
+),
+```
+
+## Reusability in Multiple Screens
+
+### **LoginPage**
+Reuses `SafeTextField` for Email/Password and `SafeButton` for Login/SignUp/Google actions.
+- `lib/screens/login_page.dart`
+
+### **Admin Dashboard**
+Reuses `SafeStatCard` for live analytics and `SafeManagementCard` for the management grid.
+- `lib/screens/admin_dashboard.dart`
+
+### **Guard Dashboard**
+Reuses `SafeManagementCard` for entry/exit actions and emergency controls.
+- `lib/screens/guard_dashboard.dart`
+
+## Screenshots
+
+### Reused Widget in LoginPage
+![reused_login.png](reused_login.png)
+*LoginPage using SafeTextField and SafeButton*
+
+### Reused Widget in Admin Dashboard
+![reused_admin.png](reused_admin.png)
+*AdminDashboard using SafeStatCard and SafeManagementCard*
+
+### Reused Widget in Guard Dashboard
+![reused_guard.png](reused_guard.png)
+*GuardDashboard reusing SafeManagementCard for different actions*
+
+## Reflection
+
+### How do reusable widgets improve development efficiency?
+They reduce code duplication (DRY principle), allowing us to define a style or behavior once and apply it everywhere. If the design team decides to change the button's border radius or primary color, we only need to update the `SafeButton` widget, and every screen in the app will reflect that change instantly. This speeds up both initial development and long-term maintenance.
+
+### What challenges did you face while designing modular components?
+Finding the right balance of flexibility (parameters) vs. consistency. Too few parameters make the widget hard to reuse in different contexts; too many make the widget complex to use. For example, adding an `isLoading` property to `SafeButton` was necessary for auth flows but required careful state handling in the parent screen.
+
+### How could your team apply this approach to your full project?
+We can build a comprehensive **SafeGate Design System** in the `lib/widgets` folder. This would include everything from custom loaders and cards to complex form layouts. Whenever a developer starts a new feature, they first check the "Lego set" of widgets to build the UI quickly and consistently, ensuring the app feels like a single, cohesive product.

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/safe_management_card.dart';
 
 class GuardDashboard extends StatelessWidget {
   const GuardDashboard({super.key});
@@ -68,8 +69,7 @@ class GuardDashboard extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: _buildMainAction(
-                    context,
+                  child: SafeManagementCard(
                     title: 'New Entry',
                     icon: Icons.person_add_alt_1,
                     color: primaryColor,
@@ -78,8 +78,7 @@ class GuardDashboard extends StatelessWidget {
                 ),
                 const SizedBox(width: 16),
                 Expanded(
-                  child: _buildMainAction(
-                    context,
+                  child: SafeManagementCard(
                     title: 'Scan Pass',
                     icon: Icons.qr_code_2,
                     color: Colors.blueAccent,
@@ -91,13 +90,12 @@ class GuardDashboard extends StatelessWidget {
             const SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
-              child: _buildMainAction(
-                context,
+              height: 120, // Adjusted height to match Management Card style in this layout
+              child: SafeManagementCard(
                 title: 'EMERGENCY LOCKDOWN',
                 icon: Icons.warning_rounded,
                 color: Colors.redAccent,
                 onTap: () {},
-                isAlert: true,
               ),
             ),
 
@@ -125,42 +123,6 @@ class GuardDashboard extends StatelessWidget {
                     status: 'Calling Resident...',
                   ),
                 ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMainAction(BuildContext context, {required String title, required IconData icon, required Color color, required VoidCallback onTap, bool isAlert = false}) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 24),
-        decoration: BoxDecoration(
-          color: isAlert ? color.withAlpha(20) : const Color(0xFF1E1E1E),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: color.withAlpha(isAlert ? 100 : 50), width: isAlert ? 2 : 1),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withAlpha(50),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Icon(icon, size: 40, color: color),
-            const SizedBox(height: 12),
-            Text(
-              title,
-              style: TextStyle(
-                color: isAlert ? color : Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
               ),
             ),
           ],
