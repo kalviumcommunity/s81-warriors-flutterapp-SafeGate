@@ -19,7 +19,7 @@ class FirestoreService {
   // Add task with optional image URL
   Future<void> addTask(String title, [String? imageUrl]) async {
     if (tasks == null) return;
-    return tasks!.add({
+    await tasks!.add({
       'title': title,
       'imageUrl': imageUrl,
       'createdAt': Timestamp.now(),
@@ -36,7 +36,7 @@ class FirestoreService {
   // Update task completion
   Future<void> toggleTaskCompletion(String docId, bool currentStatus) async {
     if (tasks == null) return;
-    return tasks!.doc(docId).update({
+    await tasks!.doc(docId).update({
       'isCompleted': !currentStatus,
     });
   }
@@ -44,6 +44,6 @@ class FirestoreService {
   // Delete task
   Future<void> deleteTask(String docId) async {
     if (tasks == null) return;
-    return tasks!.doc(docId).delete();
+    await tasks!.doc(docId).delete();
   }
 }

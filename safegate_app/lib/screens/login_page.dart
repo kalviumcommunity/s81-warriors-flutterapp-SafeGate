@@ -233,7 +233,7 @@ class _LoginPageState extends State<LoginPage> {
                         
                         // RBAC Role Selection Dropdown for SignUp
                         DropdownButtonFormField<String>(
-                          value: _selectedRole,
+                          initialValue: _selectedRole,
                           dropdownColor: surfaceDark,
                           decoration: InputDecoration(
                             labelText: 'Register As (Role)',

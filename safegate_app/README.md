@@ -1400,11 +1400,11 @@ body: LayoutBuilder(
 
 ## Reflection
 
-### Why is responsiveness important in mobile development?
-Responsive design improves usability, accessibility, and visual consistency across multiple devices. It reduces layout breakage risks and ensures that one codebase can deliver a quality experience on both phones and tablets.
+### How do these tools make your UI more adaptive?
+`MediaQuery` allows proportional sizing based on actual device dimensions, while `LayoutBuilder` enables structural changes based on available space. Together, they make the UI both scalable (sizes adapt) and flexible (layout type adapts) across form factors.
 
-### How does `LayoutBuilder` differ from `MediaQuery`?
-`MediaQuery` provides overall device information (screen size, orientation, pixel density), while `LayoutBuilder` provides local parent constraints for the specific widget subtree. In practice, `MediaQuery` is ideal for relative sizing and `LayoutBuilder` is best for conditional layout structure.
+### Why is responsive design crucial for real-world Flutter apps?
+Real-world apps run on many screen sizes, orientations, and pixel densities. Responsive design prevents overflow/clipping, improves readability and accessibility, and reduces maintenance by avoiding separate codebases for phone and tablet layouts.
 
-### How can the team scale app design efficiently using these tools?
-The team can standardize breakpoints (e.g., `<600` mobile, `>=600` tablet), build reusable adaptive widgets, and keep responsive logic in shared components. This approach keeps screens consistent and reduces rework as new modules are added.
+### What challenges did you face when testing across different screen sizes?
+The main challenge was balancing spacing and proportions so the same components looked natural on both compact and wide displays. Fine-tuning breakpoint behavior and container sizing was necessary to avoid overly stretched tablet panels and cramped mobile content.

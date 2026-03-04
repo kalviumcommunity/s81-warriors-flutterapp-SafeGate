@@ -138,9 +138,9 @@ class _StateManagementDemoState extends State<StateManagementDemo> {
   /// Returns background color based on counter thresholds
   Color _getBackgroundColor() {
     if (_counter >= 10) {
-      return Colors.greenAccent.withOpacity(0.3);
+      return Colors.greenAccent.withValues(alpha: 0.3);
     } else if (_counter >= 5) {
-      return Colors.yellowAccent.withOpacity(0.3);
+      return Colors.yellowAccent.withValues(alpha: 0.3);
     } else {
       return Colors.white;
     }

@@ -43,9 +43,9 @@ class AdminDashboard extends StatelessWidget {
               children: [
                 Expanded(child: SafeStatCard(title: 'Inside Now', count: '42', color: primaryColor)),
                 const SizedBox(width: 12),
-                Expanded(child: SafeStatCard(title: 'Expected', count: '15', color: Colors.orangeAccent)),
+                const Expanded(child: SafeStatCard(title: 'Expected', count: '15', color: Colors.orangeAccent)),
                 const SizedBox(width: 12),
-                Expanded(child: SafeStatCard(title: 'Rejected', count: '3', color: Colors.redAccent)),
+                const Expanded(child: SafeStatCard(title: 'Rejected', count: '3', color: Colors.redAccent)),
               ],
             ),
             const SizedBox(height: 24),
