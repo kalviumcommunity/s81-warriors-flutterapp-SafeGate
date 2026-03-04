@@ -209,6 +209,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             Navigator.pushNamed(context, '/user-input');
                           },
                         ),
+                        const SizedBox(height: 16),
+                        _buildGlassButton(
+                          icon: Icons.tablet_android_rounded,
+                          label: 'Responsive Layout Demo',
+                          onTap: () {
+                            Navigator.pushNamed(context, '/second');
+                          },
+                          isPrimary: false,
+                        ),
                         const SizedBox(height: 50),
 
                         // Feature pills
