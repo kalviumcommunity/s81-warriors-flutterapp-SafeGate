@@ -1311,3 +1311,100 @@ Finding the right balance of flexibility (parameters) vs. consistency. Too few p
 
 ### How could your team apply this approach to your full project?
 We can build a comprehensive **SafeGate Design System** in the `lib/widgets` folder. This would include everything from custom loaders and cards to complex form layouts. Whenever a developer starts a new feature, they first check the "Lego set" of widgets to build the UI quickly and consistently, ensuring the app feels like a single, cohesive product.
+
+---
+
+# Responsive Design Implementation
+
+## Project Title
+SafeGate: Responsive Design with MediaQuery and LayoutBuilder
+
+## Short Description
+This implementation demonstrates adaptive UI in Flutter using `MediaQuery` and `LayoutBuilder`. The screen automatically renders a mobile-first vertical layout for narrow widths and a tablet-optimized horizontal layout for larger screens.
+
+## Code Snippets
+
+### Using `MediaQuery` for Relative Sizing
+
+```dart
+final screenWidth = MediaQuery.of(context).size.width;
+final screenHeight = MediaQuery.of(context).size.height;
+
+Container(
+  width: screenWidth * 0.8,
+  height: screenHeight * 0.12,
+  alignment: Alignment.center,
+  child: const Text('Responsive Container'),
+)
+```
+
+### Using `LayoutBuilder` for Conditional Widget Trees
+
+```dart
+LayoutBuilder(
+  builder: (context, constraints) {
+    if (constraints.maxWidth < 600) {
+      return const Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('Mobile Layout'),
+          Icon(Icons.phone_android, size: 80),
+        ],
+      );
+    }
+
+    return const Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Text('Tablet Layout'),
+        Icon(Icons.tablet, size: 100),
+      ],
+    );
+  },
+)
+```
+
+### Combined Adaptive Implementation
+
+```dart
+body: LayoutBuilder(
+  builder: (context, constraints) {
+    if (constraints.maxWidth < 600) {
+      return Center(
+        child: Container(
+          width: screenWidth * 0.8,
+          height: screenHeight * 0.12,
+          child: const Center(child: Text('Mobile View')),
+        ),
+      );
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Container(width: constraints.maxWidth * 0.35, child: const Text('Tablet Left Panel')),
+        Container(width: constraints.maxWidth * 0.35, child: const Text('Tablet Right Panel')),
+      ],
+    );
+  },
+)
+```
+
+## Screenshots
+
+### Mobile Layout (Phone Emulator)
+![Responsive Mobile View](screenshots/responsive_mobile_view.png)
+
+### Tablet Layout (Tablet Emulator)
+![Responsive Tablet View](screenshots/responsive_tablet_view.png)
+
+## Reflection
+
+### Why is responsiveness important in mobile development?
+Responsive design improves usability, accessibility, and visual consistency across multiple devices. It reduces layout breakage risks and ensures that one codebase can deliver a quality experience on both phones and tablets.
+
+### How does `LayoutBuilder` differ from `MediaQuery`?
+`MediaQuery` provides overall device information (screen size, orientation, pixel density), while `LayoutBuilder` provides local parent constraints for the specific widget subtree. In practice, `MediaQuery` is ideal for relative sizing and `LayoutBuilder` is best for conditional layout structure.
+
+### How can the team scale app design efficiently using these tools?
+The team can standardize breakpoints (e.g., `<600` mobile, `>=600` tablet), build reusable adaptive widgets, and keep responsive logic in shared components. This approach keeps screens consistent and reduces rework as new modules are added.

@@ -66,9 +66,10 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const HomeScreen(),
         '/user-input': (context) => const UserInputForm(),
         '/second': (context) => const SecondScreen(),
+        '/responsive': (context) => const ResponsiveLayoutScreen(),
+        '/scrollable': (context) => const ScrollableViewsScreen(),
 
         '/': (context) => const AuthWrapper(),
         '/home': (context) => const HomeScreen(),
