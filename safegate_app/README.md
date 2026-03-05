@@ -1408,3 +1408,73 @@ Responsive design improves usability, accessibility, and visual consistency acro
 
 ### How can the team scale app design efficiently using these tools?
 The team can standardize breakpoints (e.g., `<600` mobile, `>=600` tablet), build reusable adaptive widgets, and keep responsive logic in shared components. This approach keeps screens consistent and reduces rework as new modules are added.
+
+---
+
+# Managing Assets & Icons in Flutter
+
+## Project Title
+SafeGate: Asset Management
+
+## Short Description
+This demo illustrates how to handle local assets (images and icons) in a Flutter application. It covers structuring directories, registering assets within `pubspec.yaml`, and displaying both Flutter's built-in icons and custom images side-by-side to enhance the user interface. 
+
+## Code snippets
+
+### Image Asset Usage
+```dart
+Image.asset(
+  'assets/images/logo.png',
+  width: 150,
+)
+```
+
+### Container with Background Image
+```dart
+Container(
+  decoration: const BoxDecoration(
+    image: DecorationImage(
+      image: AssetImage('assets/images/background.png'),
+      fit: BoxFit.cover,
+      colorFilter: ColorFilter.mode(
+        Colors.black54,
+        BlendMode.darken,
+      ),
+    ),
+  ),
+  child: Center(
+    child: Text('Welcome with Background'),
+  ),
+)
+```
+
+### Mixing Built-in and Custom Icons
+```dart
+Row(
+  mainAxisSize: MainAxisSize.min,
+  children: [
+    Icon(Icons.flutter_dash, color: Colors.blue, size: 36), // Material Icon
+    Icon(CupertinoIcons.heart_fill, color: Colors.red, size: 36), // Cupertino Icon
+    Image.asset('assets/icons/star.png', width: 36, height: 36), // Custom Local Asset
+  ],
+)
+```
+
+## Screenshots
+Please check the repository or attach images of the `AssetDemoScreen` and `HomeScreen` where the icons and assets are displayed effectively. Ensure `assets/images/logo.png`, `assets/images/background.png`, `assets/images/banner.jpg`, `assets/icons/star.png`, and `assets/icons/profile.png` are loaded correctly.
+
+## Reflection
+
+### What steps are necessary to load assets correctly in Flutter?
+1. Create respective directories (e.g., `assets/images/` and `assets/icons/`).
+2. Add the physical files to the created directories.
+3. Register the directories in `pubspec.yaml` under `flutter: assets:`.
+4. Ensure correct indentation (2 spaces) in the `pubspec.yaml` file.
+5. Run `flutter pub get` or let VSCode/Android Studio auto-fetch it.
+6. Use `Image.asset()` or `AssetImage()` specifying the exact relative path in your code.
+
+### What common errors did you face while configuring pubspec.yaml?
+Indentation errors are the most common pitfall. Since YAML is space-sensitive, misaligned `- assets/images/` strings will lead to build failures. Also, forgetting the trailing slash or mistyping the directory name causes "Asset not found" errors during runtime. Getting absolute vs relative path logic right is critical.
+
+### How do proper asset management practices support scalability?
+Organizing assets cleanly into subdirectories (like `images/`, `icons/`, `fonts/`) makes it easier to find and update resources as the app grows. Additionally, defining paths as constants instead of hardcoded strings everywhere prevents typos and makes swapping assets a one-place change, minimizing technical debt.
