@@ -131,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  @override
+@override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final primaryColor = theme.colorScheme.primary;
@@ -140,7 +140,20 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       backgroundColor: bgDark,
-      body: Container(
+      body: TweenAnimationBuilder<double>(
+        duration: const Duration(milliseconds: 1000),
+        tween: Tween(begin: 0.0, end: 1.0),
+        curve: Curves.easeOut,
+        builder: (context, value, child) {
+          return Opacity(
+            opacity: value,
+            child: Transform.translate(
+              offset: Offset(0, 30 * (1 - value)),
+              child: child,
+            ),
+          );
+        },
+        child: Container(
         width: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -316,6 +329,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
+        ),
         ),
       ),
     );
