@@ -1113,6 +1113,327 @@ Color _getBackgroundColor() {
 This pattern is useful for:
 - Progress indicators
 - Achievement unlocks
+
+---
+
+# Working with Images and Icons in Flutter
+
+## Project Title
+SafeGate: Assets Management - Images and Icons Demo
+
+## Short Description
+This module demonstrates how to properly add, register, and display local assets (images and icons) in a Flutter application. It covers asset folder structure, `pubspec.yaml` configuration, using `Image.asset()`, `AssetImage`, and Flutter's built-in Material and Cupertino icons.
+
+---
+
+## 1. Understanding Assets in Flutter
+
+Assets are static resources bundled with your app, including:
+- **Images**: JPEG, PNG, SVG, GIF files
+- **Icons**: Built-in Flutter icons or custom icon packs
+- **Fonts/JSON**: Custom fonts, animations, or configuration files
+
+Flutter loads these files from the `pubspec.yaml` configuration during the build process.
+
+---
+
+## 2. Asset Folder Structure
+
+### Project Directory Layout
+
+```
+safegate_app/
+├── assets/
+│   ├── images/
+│   │   ├── flutter_01.png
+│   │   ├── flutter_02.png
+│   │   ├── flutter_03.png
+│   │   ├── img.png
+│   │   ├── img_1.png
+│   │   ├── stateless_stateful_initial.png
+│   │   └── stateless_stateful_updated.png
+│   └── icons/
+│       └── (custom icons here)
+├── lib/
+│   └── screens/
+│       └── asset_demo_screen.dart
+└── pubspec.yaml
+```
+
+---
+
+## 3. Registering Assets in pubspec.yaml
+
+The `flutter:` section of `pubspec.yaml` must include asset paths:
+
+```yaml
+flutter:
+  uses-material-design: true
+  
+  # Asset configuration for images and icons
+  assets:
+    - assets/images/
+    - assets/icons/
+```
+
+> **Important**: YAML is space-sensitive. Use exactly 2 spaces for indentation. Incorrect spacing will cause build errors.
+
+After adding new assets, run:
+```bash
+flutter pub get
+```
+
+---
+
+## 4. Displaying Local Images
+
+### Using Image.asset()
+
+```dart
+Image.asset(
+  'assets/images/flutter_01.png',
+  width: 150,
+  height: 150,
+  fit: BoxFit.cover,
+)
+```
+
+### Using AssetImage in Container Decoration
+
+```dart
+Container(
+  height: 180,
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(12),
+    image: const DecorationImage(
+      image: AssetImage('assets/images/flutter_02.png'),
+      fit: BoxFit.cover,
+    ),
+  ),
+  child: Center(
+    child: Text(
+      'Welcome to Flutter!',
+      style: TextStyle(color: Colors.white, fontSize: 22),
+    ),
+  ),
+)
+```
+
+### Error Handling for Missing Images
+
+```dart
+Image.asset(
+  'assets/images/logo.png',
+  width: 200,
+  height: 150,
+  fit: BoxFit.contain,
+  errorBuilder: (context, error, stackTrace) {
+    return Container(
+      width: 200,
+      height: 150,
+      color: Colors.grey[200],
+      child: Icon(Icons.image_not_supported, size: 48),
+    );
+  },
+)
+```
+
+---
+
+## 5. Using Flutter's Built-in Icons
+
+### Material Icons
+
+Flutter provides the Material Icons library with 2,000+ icons:
+
+```dart
+Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    Icon(Icons.star, color: Colors.amber, size: 32),
+    SizedBox(width: 10),
+    Text('Starred', style: TextStyle(fontSize: 18)),
+  ],
+)
+```
+
+### Cupertino Icons (iOS Style)
+
+```dart
+import 'package:flutter/cupertino.dart';
+
+Icon(CupertinoIcons.heart_fill, color: Colors.red, size: 32)
+```
+
+### Common SafeGate Icons
+
+```dart
+Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    Icon(Icons.security, color: Colors.green, size: 36),
+    Icon(Icons.qr_code_scanner, color: Colors.blue, size: 36),
+    Icon(Icons.verified_user, color: Colors.teal, size: 36),
+    Icon(Icons.notifications_active, color: Colors.orange, size: 36),
+  ],
+)
+```
+
+---
+
+## 6. Complete Asset Demo Screen
+
+### File: `lib/screens/asset_demo_screen.dart`
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+
+class AssetDemoScreen extends StatelessWidget {
+  const AssetDemoScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Assets Demo')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Local image
+            Image.asset('assets/images/flutter_01.png', width: 120),
+            const SizedBox(height: 20),
+            const Text('Powered by Flutter', style: TextStyle(fontSize: 20)),
+            const SizedBox(height: 20),
+            // Platform icons row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.flutter_dash, color: Colors.blue, size: 36),
+                const SizedBox(width: 10),
+                Icon(Icons.android, color: Colors.green, size: 36),
+                const SizedBox(width: 10),
+                Icon(Icons.apple, color: Colors.grey, size: 36),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+---
+
+## 7. Demo Screen Features
+
+The `AssetDemoScreen` demonstrates:
+
+| Section | Description |
+|---------|-------------|
+| **Local Image Display** | Using `Image.asset()` with error handling |
+| **Image in Container** | Using `AssetImage` with `BoxDecoration` |
+| **Material Icons** | Common icons with labels |
+| **Cupertino Icons** | iOS-style icons |
+| **Combined Assets** | Logo image with platform icons |
+| **SafeGate Features** | Feature rows with icons and descriptions |
+
+---
+
+## 8. Common Asset Handling Errors
+
+| Error | Cause | Solution |
+|-------|-------|----------|
+| `Unable to load asset` | File path mismatch | Verify path matches exactly in `pubspec.yaml` and code |
+| Build fails | YAML indentation | Use exactly 2 spaces for indentation |
+| Images not showing | Unregistered folder | Add directory under `flutter: assets:` |
+| Hot reload not working | New asset added | Run `flutter pub get` to refresh |
+| Asset not found at runtime | Case sensitivity | Match exact filename case on all platforms |
+
+---
+
+## 9. Screenshots
+
+### Asset Demo Screen
+![asset_demo_screen.png](asset_demo_screen.png)
+*App displaying local images and Material icons*
+
+### Project Structure
+```
+safegate_app/
+└── assets/
+    ├── images/    (7 image files)
+    └── icons/     (custom icons folder)
+```
+
+### pubspec.yaml Configuration
+```yaml
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/icons/
+```
+
+---
+
+## 10. Test and Verify
+
+Run your app and confirm:
+- [ ] All images appear correctly without red error boxes
+- [ ] Material icons display with correct colors and sizes
+- [ ] Cupertino icons render properly
+- [ ] No "missing asset" errors in console
+- [ ] Images scale properly on different screen sizes
+
+---
+
+## Reflection
+
+### What steps are necessary to load assets correctly in Flutter?
+1. **Create folder structure**: Organize assets in `assets/images/` and `assets/icons/`
+2. **Register in pubspec.yaml**: Add paths under `flutter: assets:`
+3. **Run flutter pub get**: Refresh the project to include new assets
+4. **Use correct path**: Reference exact path in `Image.asset()` or `AssetImage()`
+5. **Handle errors**: Add `errorBuilder` for graceful fallbacks
+
+### What common errors did you face while configuring pubspec.yaml?
+- **YAML indentation errors**: YAML requires exactly 2 spaces per level
+- **Path mismatches**: Paths in code must match pubspec.yaml exactly
+- **Missing flutter pub get**: New assets require refreshing the project
+- **Case sensitivity**: Some platforms are case-sensitive for filenames
+
+### How do proper asset management practices support scalability?
+1. **Organized structure**: Separate folders for images, icons, and fonts make assets easy to find
+2. **Central registration**: All assets listed in one place (`pubspec.yaml`) provides clear inventory
+3. **Consistent naming**: Using descriptive names (`logo_dark.png`, `icon_security.png`) aids maintenance
+4. **Resolution variants**: Flutter supports `1.5x/`, `2.0x/`, `3.0x/` folders for device-specific images
+5. **Lazy loading**: Assets are loaded on demand, keeping initial app size small
+
+---
+
+## Files Created/Modified
+
+- `assets/images/` - Folder containing app images
+- `assets/icons/` - Folder for custom icons
+- `lib/screens/asset_demo_screen.dart` - Demo screen showcasing asset usage
+- `pubspec.yaml` - Added asset registration
+
+---
+
+## Submission Checklist
+
+- Commit message:
+  - `feat: implemented assets management with images and icons`
+- Pull request title:
+  - `[Sprint] Working with Images and Icons – TeamName`
+- PR description should include:
+  - Summary of asset setup and demo implementation
+  - Screenshots showing images and icons displayed correctly
+  - Reflection on asset handling best practices
+
+---
 - Form validation visual feedback
 - Dark/light theme toggles
 
