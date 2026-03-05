@@ -13,6 +13,8 @@ import 'screens/guard_dashboard.dart';
 import 'screens/admin_dashboard.dart';
 import 'screens/super_admin_dashboard.dart';
 import 'screens/asset_demo_screen.dart';
+import 'screens/animations_demo_screen.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -72,6 +74,8 @@ class MyApp extends StatelessWidget {
         '/responsive': (context) => const ResponsiveLayoutScreen(),
         '/scrollable': (context) => const ScrollableViewsScreen(),
         '/assets': (context) => const AssetDemoScreen(),
+        '/animations': (context) => const AnimationsDemoScreen(),
+
 
         '/': (context) => const AuthWrapper(),
         '/home': (context) => const HomeScreen(),

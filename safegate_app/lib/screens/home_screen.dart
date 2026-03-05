@@ -220,10 +220,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         ),
                         const SizedBox(height: 16),
                         _buildGlassButton(
-                          icon: Icons.image,
-                          label: 'Assets & Icons Demo',
+                          icon: Icons.auto_awesome_motion_rounded,
+                          label: 'Animations & Transitions',
                           onTap: () {
-                            Navigator.pushNamed(context, '/assets');
+                            Navigator.pushNamed(context, '/animations');
                           },
                           isPrimary: false,
                         ),
