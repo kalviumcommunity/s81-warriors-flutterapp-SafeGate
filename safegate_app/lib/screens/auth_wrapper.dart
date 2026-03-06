@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../services/firebase_status.dart';
 import '../services/auth_service.dart';
 import 'home_screen.dart';
 
@@ -21,6 +22,15 @@ class _AuthWrapperState extends State<AuthWrapper> {
   }
 
   Future<void> _checkAuthState() async {
+    if (!firebaseAvailable) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      return;
+    }
+
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       // User is logged in, fetch their RBAC role and redirect
