@@ -19,7 +19,7 @@ class FirestoreService {
   // Add task with optional image URL
   Future<void> addTask(String title, [String? imageUrl]) async {
     if (tasks == null) return;
-    return tasks!.add({
+    await tasks!.add({
       'title': title,
       'imageUrl': imageUrl,
       'createdAt': Timestamp.now(),

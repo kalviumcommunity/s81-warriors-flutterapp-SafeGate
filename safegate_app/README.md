@@ -1683,3 +1683,130 @@ Adapting the traditional Groovy-based Gradle instructions (`build.gradle`) to th
 ### How does Firebase setup prepare your app for authentication and storage features?
 By initializing `firebase_core`, the app establishes a secure handshake with Google's servers. This provides the foundation for using `firebase_auth` to manage user sessions and `cloud_firestore` to store sensitive security data, ensuring that every subsequent feature has a reliable and secure identity provider and data layer.
 
+---
+
+# Firebase SDK Integration with FlutterFire CLI
+
+## Project Title
+SafeGate Firebase SDK Integration via FlutterFire CLI
+
+## Purpose
+This section documents CLI-first Firebase integration for SafeGate so Android, iOS, macOS, and Web can be configured from one workflow and initialized using `DefaultFirebaseOptions.currentPlatform`.
+
+## Steps Performed
+
+### 1) Install CLI Tools
+```bash
+npm install -g firebase-tools
+dart pub global activate flutterfire_cli
+```
+
+On Windows, if `flutterfire` is not recognized, use:
+
+```powershell
+$env:LOCALAPPDATA\Pub\Cache\bin\flutterfire.bat --version
+```
+
+### 2) Firebase Login
+```bash
+firebase login
+```
+
+### 3) Configure Flutter Project
+Run this from the `safegate_app` directory:
+
+```bash
+flutterfire configure --project <your-firebase-project-id>
+```
+
+This generates:
+
+- `lib/firebase_options.dart`
+
+### 4) Install Dependencies
+Dependencies used in this project:
+
+```yaml
+dependencies:
+  firebase_core: ^3.0.0
+  cloud_firestore: ^5.6.12
+  firebase_auth: ^5.7.0
+  firebase_storage: ^12.0.0
+```
+
+Then run:
+
+```bash
+flutter pub get
+```
+
+### 5) Initialize Firebase in `main.dart`
+```dart
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const MyApp());
+}
+```
+
+## Verification
+
+Run:
+
+```bash
+flutter run
+```
+
+Expected runtime log:
+
+```text
+Firebase initialized with DefaultFirebaseOptions
+```
+
+Screenshot placeholders to include in submission:
+
+- Terminal output showing successful FlutterFire CLI setup
+- Firebase Console → Project Settings → Your Apps showing SafeGate app registration
+
+## Common Issues and Fixes
+
+| Issue | Cause | Fix |
+|---|---|---|
+| `flutterfire` not recognized | Pub cache bin not on PATH | Add `C:\Users\<user>\AppData\Local\Pub\Cache\bin` to PATH |
+| Firebase not initialized | Missing `Firebase.initializeApp(...)` call | Initialize before `runApp()` |
+| Build fails on Android | Google services plugin not applied | Ensure `com.google.gms.google-services` plugin is applied |
+| Wrong Firebase project | Incorrect project selected during configure | Re-run `flutterfire configure --project <id>` |
+
+## Reflection
+
+### How did FlutterFire CLI simplify integration?
+It removed manual file wiring across platforms and standardized Firebase initialization through a generated `firebase_options.dart`, reducing setup mistakes.
+
+### What errors occurred and how were they resolved?
+The main issue was FlutterFire CLI not found in PATH on Windows. Running it from `%LOCALAPPDATA%\Pub\Cache\bin` or adding that location to PATH resolved it.
+
+### Why prefer CLI-based setup over manual configuration?
+CLI-based setup is reproducible, faster for multi-platform apps, and less error-prone than hand-editing Gradle and platform-specific config files.
+
+## Submission Checklist
+
+1. Commit message:
+
+```text
+feat: integrated Firebase SDKs using FlutterFire CLI
+```
+
+2. PR title:
+
+```text
+[Sprint-2] Firebase SDK Integration with FlutterFire CLI – TeamName
+```
+
+3. PR description should include:
+
+- Steps followed
+- Screenshot/log of successful CLI setup
+- Reflection on CLI benefits and learnings
+
