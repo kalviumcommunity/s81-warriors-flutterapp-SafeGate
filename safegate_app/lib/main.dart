@@ -20,6 +20,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await Firebase.initializeApp();
+    debugPrint('✅ Firebase successfully initialized!');
     firebaseAvailable = true;
   } catch (e, st) {
     // Firebase options may be missing on web (firebase_options.dart not generated).
